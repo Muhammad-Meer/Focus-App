@@ -1,4 +1,6 @@
+
 import { useState, useEffect, useRef } from "react";
+import Reminders from "./Reminders";
 import {
   createSession,
   startSession,
@@ -92,19 +94,19 @@ export default function FocusSession() {
     setIsRunning(true);
   };
 
-  const handleEnd = async () => {
-    clearInterval(timerRef.current);
-    try {
-      const { data } = await endSession(session._id);
-      setSession(data.session);
-      setReward(data.rewards);
-      setIsRunning(false);
-      setSecondsLeft(0);
-      loadData();
-    } catch (err) {
-      setError("Failed to end session");
-    }
-  };
+const handleEnd = async () => {
+  clearInterval(timerRef.current);
+  try {
+    const { data } = await endSession(session._id);
+    setSession(data.session);
+    setReward(data.rewards);
+    setIsRunning(false);
+    setSecondsLeft(0);
+    loadData(); // stats + history refresh
+  } catch (err) {
+    setError("Failed to end session");
+  }
+};
 
   const handleNew = () => {
     setSession(null);
@@ -137,6 +139,30 @@ export default function FocusSession() {
           </div>
         </div>
       )}
+      <Reminders />
+
+      {/* ===== BADGES SECTION ===== */}
+{stats?.badges?.length > 0 && (
+  <div className="badges-section">
+    <h3>Your Badges</h3>
+    <div className="badges-grid">
+      {stats.badges.map((badge) => (
+        <div key={badge.id} className="badge-card">
+          <span className="badge-emoji">
+            {badge.id === "first_session" && "🎯"}
+            {badge.id === "streak_7" && "🔥"}
+            {badge.id === "streak_30" && "💪"}
+            {badge.id === "hours_100" && "⏱️"}
+          </span>
+          <div className="badge-info">
+            <strong>{badge.name}</strong>
+            <p>{badge.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
       {/* ===== MAIN CARD ===== */}
       <div className="focus-card">
@@ -207,18 +233,36 @@ export default function FocusSession() {
         )}
 
         {/* Reward Popup */}
-        {reward && (
-          <div className="reward-box">
-            <h3>Session Complete!</h3>
-            <p>+{reward.pointsEarned} Points</p>
-            <p>Current Streak: {reward.currentStreak} days</p>
-            <p>Level: {reward.level}</p>
-            <button className="btn-start" onClick={handleNew}>
-              Start New Session
-            </button>
-          </div>
-        )}
-      </div>
+        
+        {/* ========== YAHAN PASTE KARO ========== */}
+      {reward && (
+        <div className="reward-box">
+          <h3>Session Complete!</h3>
+          <p className="reward-points">+{reward.pointsEarned} Points</p>
+          <p>Streak: {reward.currentStreak} days • Level {reward.level}</p>
+
+          {reward.newBadges && reward.newBadges.length > 0 && (
+            <div className="new-badges">
+              <p className="new-badge-title">New Badge Unlocked!</p>
+              {reward.newBadges.map((badge) => (
+                <div key={badge.id} className="badge-earned">
+                  <span className="badge-icon">🏆</span>
+                  <div>
+                    <strong>{badge.name}</strong>
+                    <p>{badge.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <button className="btn-start" onClick={handleNew}>
+            Start New Session
+          </button>
+        </div>
+      )}
+      {/* ===================================== */}
+       </div>
 
       {/* ===== HISTORY ===== */}
       <div className="history">
