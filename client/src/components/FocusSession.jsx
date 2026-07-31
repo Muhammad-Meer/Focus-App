@@ -1,183 +1,244 @@
 import { useState, useEffect, useRef } from "react";
-import { createSession, startSession, pauseSession, resumeSession, endSession } from "../api";
+import {
+  createSession,
+  startSession,
+  pauseSession,
+  resumeSession,
+  endSession,
+  getSessionHistory,
+  getUserStats,
+} from "../api";
 import "../styles/focus.css";
 
 export default function FocusSession() {
-  const [title, setTitle] = useState("Deep Work");
-  const [plannedDuration, setPlannedDuration] = useState(25);
+  const [task, setTask] = useState("");
+  const [duration, setDuration] = useState(25);
   const [session, setSession] = useState(null);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [history, setHistory] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [reward, setReward] = useState(null);
+
   const timerRef = useRef(null);
 
-  // Timer logic
+  useEffect(() => {
+    loadData();
+  }, []);
+
   useEffect(() => {
     if (isRunning && secondsLeft > 0) {
       timerRef.current = setInterval(() => {
         setSecondsLeft((prev) => prev - 1);
       }, 1000);
     }
-
-    if (secondsLeft === 0 && isRunning) {
-      handleEnd();
-    }
-
+    if (secondsLeft === 0 && isRunning) handleEnd();
     return () => clearInterval(timerRef.current);
   }, [isRunning, secondsLeft]);
 
-  const formatTime = (totalSeconds) => {
-    const mins = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  const loadData = async () => {
+    try {
+      const [hist, userStats] = await Promise.all([
+        getSessionHistory(),
+        getUserStats(),
+      ]);
+      setHistory(hist.data);
+      setStats(userStats.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleCreate = async (e) => {
+  const formatTime = (s) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  };
+
+  const handleStart = async (e) => {
     e.preventDefault();
-    setError("");
+    if (!task.trim()) return setError("Please write your focus task");
+
     setLoading(true);
+    setError("");
     try {
-      const { data } = await createSession({ title, plannedDuration });
-      setSession(data);
-      setSecondsLeft(plannedDuration * 60);
+      const { data: newSession } = await createSession({
+        title: task,
+        plannedDuration: duration,
+      });
+      const { data: started } = await startSession(newSession._id);
+      setSession(started);
+      setSecondsLeft(duration * 60);
+      setIsRunning(true);
+      setReward(null);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to create session");
+      setError(err.response?.data?.message || "Failed to start");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleStart = async () => {
-    try {
-      const { data } = await startSession(session._id);
-      setSession(data);
-      setIsRunning(true);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to start");
-    }
-  };
-
   const handlePause = async () => {
-    try {
-      const { data } = await pauseSession(session._id);
-      setSession(data);
-      setIsRunning(false);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to pause");
-    }
+    const { data } = await pauseSession(session._id);
+    setSession(data);
+    setIsRunning(false);
   };
 
   const handleResume = async () => {
-    try {
-      const { data } = await resumeSession(session._id);
-      setSession(data);
-      setIsRunning(true);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to resume");
-    }
+    const { data } = await resumeSession(session._id);
+    setSession(data);
+    setIsRunning(true);
   };
 
   const handleEnd = async () => {
+    clearInterval(timerRef.current);
     try {
-      clearInterval(timerRef.current);
       const { data } = await endSession(session._id);
-      setSession(data);
+      setSession(data.session);
+      setReward(data.rewards);
       setIsRunning(false);
       setSecondsLeft(0);
+      loadData();
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to end");
+      setError("Failed to end session");
     }
   };
 
-  const handleReset = () => {
+  const handleNew = () => {
     setSession(null);
-    setSecondsLeft(0);
-    setIsRunning(false);
-    setTitle("Deep Work");
-    setPlannedDuration(25);
+    setTask("");
+    setDuration(25);
+    setReward(null);
     setError("");
   };
 
-  // ====== CREATE FORM ======
-  if (!session) {
-    return (
-      <div className="focus-container">
-        <div className="focus-card">
-          <h2>Create Focus Session</h2>
-          {error && <p className="error">{error}</p>}
-
-          <form onSubmit={handleCreate}>
-            <div className="form-group">
-              <label>Session Title</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Deep Work"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Duration (minutes)</label>
-              <input
-                type="number"
-                value={plannedDuration}
-                onChange={(e) => setPlannedDuration(Number(e.target.value))}
-                min="1"
-                required
-              />
-            </div>
-
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? "Creating..." : "Create Session"}
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
-  // ====== ACTIVE SESSION ======
   return (
-    <div className="focus-container">
-      <div className="focus-card active-session">
-        <h2>{session.title}</h2>
-        <p className="status">Status: <span className={`badge ${session.status}`}>{session.status}</span></p>
-
-        <div className="timer-display">
-          {formatTime(secondsLeft)}
+    <div className="focus-app">
+      {/* ===== STATS BAR ===== */}
+      {stats && (
+        <div className="stats-bar">
+          <div className="stat">
+            <span className="stat-value">{stats.points}</span>
+            <span className="stat-label">Points</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">{stats.currentStreak}</span>
+            <span className="stat-label">Streak</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">Lvl {stats.level}</span>
+            <span className="stat-label">Level</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">{stats.totalFocusMinutes}m</span>
+            <span className="stat-label">Total Focus</span>
+          </div>
         </div>
+      )}
 
-        {error && <p className="error">{error}</p>}
+      {/* ===== MAIN CARD ===== */}
+      <div className="focus-card">
+        {!session || session.status === "completed" ? (
+          <>
+            <h1>Focus Mode</h1>
+            <p className="subtitle">Protect your attention. Build better habits.</p>
 
-        <div className="controls">
-          {session.status === "created" && (
-            <button className="btn-start" onClick={handleStart}>Start</button>
-          )}
+            {error && <p className="error">{error}</p>}
 
-          {session.status === "running" && (
-            <>
-              <button className="btn-pause" onClick={handlePause}>Pause</button>
-              <button className="btn-end" onClick={handleEnd}>End</button>
-            </>
-          )}
+            <form onSubmit={handleStart}>
+              <div className="form-group">
+                <label>What will you focus on?</label>
+                <textarea
+                  value={task}
+                  onChange={(e) => setTask(e.target.value)}
+                  placeholder="Example: 2 hours deep study / Finish React project / Read 40 pages..."
+                  rows="3"
+                />
+              </div>
 
-          {session.status === "paused" && (
-            <>
-              <button className="btn-resume" onClick={handleResume}>Resume</button>
-              <button className="btn-end" onClick={handleEnd}>End</button>
-            </>
-          )}
+              <div className="form-group">
+                <label>Duration (minutes)</label>
+                <div className="duration-options">
+                  {[15, 25, 45, 60, 90].map((d) => (
+                    <button
+                      type="button"
+                      key={d}
+                      className={duration === d ? "active" : ""}
+                      onClick={() => setDuration(d)}
+                    >
+                      {d}m
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          {(session.status === "completed" || session.status === "cancelled") && (
-            <div className="completed-info">
-              <p>Actual Duration: <strong>{session.actualDuration} min</strong></p>
-              <button className="btn-primary" onClick={handleReset}>New Session</button>
+              <button className="btn-start" disabled={loading}>
+                {loading ? "Starting..." : "Start Focus Session"}
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <p className="current-task">{session.title}</p>
+            <div className={`timer ${session.status}`}>
+              {formatTime(secondsLeft)}
             </div>
-          )}
-        </div>
+            <p className="status-text">
+              {session.status === "running" ? "Focusing..." : "Paused"}
+            </p>
+
+            <div className="controls">
+              {session.status === "running" && (
+                <>
+                  <button className="btn-pause" onClick={handlePause}>Pause</button>
+                  <button className="btn-end" onClick={handleEnd}>End</button>
+                </>
+              )}
+              {session.status === "paused" && (
+                <>
+                  <button className="btn-resume" onClick={handleResume}>Resume</button>
+                  <button className="btn-end" onClick={handleEnd}>End</button>
+                </>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Reward Popup */}
+        {reward && (
+          <div className="reward-box">
+            <h3>Session Complete!</h3>
+            <p>+{reward.pointsEarned} Points</p>
+            <p>Current Streak: {reward.currentStreak} days</p>
+            <p>Level: {reward.level}</p>
+            <button className="btn-start" onClick={handleNew}>
+              Start New Session
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* ===== HISTORY ===== */}
+      <div className="history">
+        <h2>Recent Sessions</h2>
+        {history.length === 0 ? (
+          <p className="empty">No sessions yet. Start your first focus!</p>
+        ) : (
+          history.slice(0, 8).map((item) => (
+            <div key={item._id} className="history-item">
+              <div>
+                <strong>{item.title}</strong>
+                <div className="meta">
+                  {item.actualDuration} min • {item.pointsEarned || 0} pts •{" "}
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+              <span className={`badge ${item.status}`}>{item.status}</span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
