@@ -1,16 +1,42 @@
-# React + Vite
+# Zaf Focus — Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite + Tailwind CSS frontend for the Focus App. This is the single frontend for the project (merged from the design source; no separate UI app exists anymore).
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + TypeScript
+- Vite 8
+- Tailwind CSS v4
+- lucide-react (icons)
+- axios (backend API calls to `http://localhost:5000/api`)
 
-## React Compiler
+## Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+src/
+├── main.tsx                  → entry point
+├── App.tsx                   → auth gate + main layout (sidebar, header, views, modals)
+├── api.js                    → backend API client
+├── api.d.ts                  → types for the API client
+├── types.ts                  → shared domain types
+├── index.css                 → Tailwind + theme tokens (light/dark)
+├── context/AppContext.tsx    → global state + backend wiring (timer, sessions, goals, stats, badges)
+├── components/
+│   ├── auth/AuthPage.tsx     → login / signup
+│   ├── Header.tsx, Sidebar.tsx
+│   ├── views/                → Dashboard, Focus, Stats, Achievements, Goals, Settings
+│   └── modals/               → Profile, Notifications, Support, Subscription, Sign out, Delete account
+└── utils/
+    ├── audio.ts              → Web Audio ambient sound synthesizer
+    └── storage.ts            → localStorage persistence + seed data
+```
 
-## Expanding the Oxlint configuration
+## Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+npm run dev          # start dev server
+npm run build        # production build
+npm run lint         # oxlint
+npm run typecheck    # tsc --noEmit
+npm run preview      # preview production build
+```

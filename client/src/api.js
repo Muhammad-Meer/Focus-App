@@ -22,6 +22,7 @@ export const createSession = (data) => API.post("/focus", data);
 export const startSession = (id) => API.put(`/focus/${id}/start`);
 export const pauseSession = (id) => API.put(`/focus/${id}/pause`);
 export const resumeSession = (id) => API.put(`/focus/${id}/resume`);
-export const endSession = (id) => API.put(`/focus/${id}/end`);
+export const endSession = (id, data) => API.put(`/focus/${id}/end`, data);
+export const cancelSession = (id) => API.put(`/focus/${id}/cancel`);
 export const getSessionHistory = () => API.get("/focus/history");
 export const getUserStats = () => API.get("/focus/stats");

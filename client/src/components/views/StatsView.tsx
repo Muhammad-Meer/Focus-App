@@ -1,0 +1,238 @@
+import React, { useState } from 'react';
+import {
+  Download,
+  Search,
+  PieChart as PieChartIcon,
+} from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+
+export const StatsView: React.FC = () => {
+  const { sessions, exportDataCSV } = useApp();
+  const [filterCategory, setFilterCategory] = useState<string>('All');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  // Group weekly data for bar charts
+  const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const mockWeeklyHours = [4.5, 6.0, 5.2, 7.1, 4.0, 2.5, 3.8];
+
+  // Real weekly totals (hours per weekday) from completed sessions
+  const dayTotals = new Array(7).fill(0);
+  sessions.forEach((s) => {
+    const d = new Date(s.completedAt);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    d.setHours(0, 0, 0, 0);
+    const diffDays = Math.floor((now.getTime() - d.getTime()) / 86400000);
+    if (diffDays >= 0 && diffDays < 7) {
+      const dayIndex = (d.getDay() + 6) % 7;
+      dayTotals[dayIndex] += s.durationMinutes / 60;
+    }
+  });
+
+  const hasRealData = dayTotals.some((v) => v > 0);
+  const weeklyHours = hasRealData ? dayTotals : mockWeeklyHours;
+  const weeklyTotal = weeklyHours.reduce((a, b) => a + b, 0).toFixed(1);
+  const maxWeeklyHour = Math.max(...weeklyHours);
+
+  // Category breakdown calculation
+  const categoryTotals: Record<string, number> = {};
+  sessions.forEach((s) => {
+    categoryTotals[s.category] = (categoryTotals[s.category] || 0) + s.durationMinutes;
+  });
+
+  const totalMinutesAll = Object.values(categoryTotals).reduce((a, b) => a + b, 0) || 1;
+
+  // Search and filter sessions
+  const filteredSessions = sessions.filter((s) => {
+    const matchesCat = filterCategory === 'All' || s.category === filterCategory;
+    const matchesSearch =
+      s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      s.category.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-8 pb-16 animate-fadeIn" id="stats-view">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+            Focus Analytics & Stats
+          </h2>
+          <p className="text-[var(--text-secondary)] mt-1 text-sm">
+            Detailed performance breakdown, focus volume, and session history logs.
+          </p>
+        </div>
+
+        <button
+          onClick={exportDataCSV}
+          className="flex items-center space-x-2 border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--bg-card-subtle)] text-[var(--text-primary)] text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+        >
+          <Download className="w-4 h-4 text-[var(--text-muted)]" />
+          <span>Export CSV</span>
+        </button>
+      </div>
+
+      {/* Analytics Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Weekly Focus Hours Bar Graph */}
+        <div className="lg:col-span-2 bg-[var(--bg-card)] border border-[var(--border-color)] p-6 rounded-2xl shadow-xs space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-base text-[var(--text-primary)]">
+                Weekly Focus Volume
+              </h3>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                Total hours logged per day this week
+              </p>
+            </div>
+            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-3 py-1 rounded-lg">
+              {weeklyTotal} Hours Total
+            </span>
+          </div>
+
+          {/* Bar Chart Canvas Simulation */}
+          <div className="h-48 flex items-end justify-between gap-3 pt-6 px-2">
+            {daysOfWeek.map((day, idx) => {
+              const val = mockWeeklyHours[idx];
+              const heightPct = (val / maxWeeklyHour) * 100;
+              return (
+                <div key={day} className="flex-1 flex flex-col items-center gap-2 group">
+                  <span className="text-[10px] font-bold text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity">
+                    {val}h
+                  </span>
+                  <div className="w-full bg-[var(--bg-card-subtle)] h-36 rounded-xl flex items-end overflow-hidden p-1">
+                    <div
+                      className="w-full bg-gradient-to-t from-indigo-600 to-indigo-500 rounded-lg transition-all duration-500 group-hover:from-indigo-500 group-hover:to-indigo-400"
+                      style={{ height: `${heightPct}%` }}
+                    />
+                  </div>
+                  <span className="text-xs font-semibold text-[var(--text-secondary)]">
+                    {day}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Category Breakdown Donut / Progress */}
+        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] p-6 rounded-2xl shadow-xs space-y-5">
+          <div className="flex items-center space-x-2">
+            <PieChartIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <h3 className="font-semibold text-base text-[var(--text-primary)]">
+              Focus Distribution
+            </h3>
+          </div>
+
+          <div className="space-y-4">
+            {Object.entries(categoryTotals).map(([cat, mins]) => {
+              const pct = Math.round((mins / totalMinutesAll) * 100);
+              return (
+                <div key={cat} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-medium">
+                    <span className="text-[var(--text-primary)]">{cat}</span>
+                    <span className="text-[var(--text-muted)]">
+                      {mins} mins ({pct}%)
+                    </span>
+                  </div>
+                  <div className="w-full bg-[var(--bg-card-subtle)] h-2 rounded-full overflow-hidden">
+                    <div
+                      className="bg-indigo-600 h-full rounded-full"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Filterable Session Logs Table */}
+      <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h3 className="font-semibold text-lg text-[var(--text-primary)]">Session Logs</h3>
+
+          {/* Search & Category Filter */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative">
+              <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search sessions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 pr-4 py-2 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-xs font-medium text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 w-44"
+              />
+            </div>
+
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="bg-[var(--bg-card-subtle)] border border-[var(--border-color)] text-xs font-medium text-[var(--text-primary)] rounded-xl px-3 py-2 focus:outline-none cursor-pointer"
+            >
+              <option value="All">All Categories</option>
+              <option value="Coding">Coding</option>
+              <option value="Design">Design</option>
+              <option value="Writing">Writing</option>
+              <option value="Planning">Planning</option>
+              <option value="Research">Research</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-[var(--border-color)] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+                <th className="py-3 px-4">Session Title</th>
+                <th className="py-3 px-4">Category</th>
+                <th className="py-3 px-4">Duration</th>
+                <th className="py-3 px-4">Mode</th>
+                <th className="py-3 px-4">Completed Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[var(--border-color)]">
+              {filteredSessions.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-[var(--text-muted)]">
+                    No focus sessions found matching criteria.
+                  </td>
+                </tr>
+              ) : (
+                filteredSessions.map((s) => (
+                  <tr key={s.id} className="hover:bg-[var(--bg-card-subtle)] transition-colors">
+                    <td className="py-3.5 px-4 font-semibold text-[var(--text-primary)]">
+                      {s.title}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold text-[11px]">
+                        {s.category}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 font-bold text-[var(--text-primary)]">
+                      {s.durationMinutes} mins
+                    </td>
+                    <td className="py-3.5 px-4 capitalize text-[var(--text-secondary)]">
+                      {s.mode}
+                    </td>
+                    <td className="py-3.5 px-4 text-[var(--text-muted)]">
+                      {new Date(s.completedAt).toLocaleString([], {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
