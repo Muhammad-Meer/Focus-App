@@ -9,16 +9,24 @@ const focusSessionSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      default: "Focus Session",
+      required: true,
       trim: true,
+    },
+    category: {
+      type: String,
+      default: "Coding",
+    },
+    mode: {
+      type: String,
+      enum: ["pomodoro", "shortBreak", "longBreak", "custom"],
+      default: "pomodoro",
     },
     plannedDuration: {
       type: Number, // minutes
       required: true,
-      min: 1,
     },
     actualDuration: {
-      type: Number, // minutes (calculated at the end)
+      type: Number,
       default: 0,
     },
     status: {
@@ -26,17 +34,15 @@ const focusSessionSchema = new mongoose.Schema(
       enum: ["created", "running", "paused", "completed", "cancelled"],
       default: "created",
     },
-    startTime: {
-      type: Date,
-    },
-    endTime: {
-      type: Date,
-    },
-    pausedAt: {
-      type: Date,
-    },
+    startTime: Date,
+    endTime: Date,
+    pausedAt: Date,
     totalPausedTime: {
-      type: Number, // milliseconds
+      type: Number, // ms
+      default: 0,
+    },
+    pointsEarned: {
+      type: Number,
       default: 0,
     },
   },
