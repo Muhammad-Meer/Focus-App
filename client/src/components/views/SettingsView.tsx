@@ -12,7 +12,6 @@ import {
   LogOut,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { DEFAULT_INVOICES } from '../../utils/storage';
 
 export const SettingsView: React.FC = () => {
   const {
@@ -171,12 +170,12 @@ export const SettingsView: React.FC = () => {
               <span className="inline-block bg-white/20 text-white text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase mb-3">
                 CURRENT PLAN
               </span>
-              <h4 className="text-2xl font-extrabold tracking-tight">Pro Tier</h4>
+              <h4 className="text-2xl font-extrabold tracking-tight">Free Tier</h4>
             </div>
 
             <div className="flex items-end justify-between mt-6">
               <p className="text-xs text-indigo-100 font-medium">
-                Renews on Oct 12, 2024
+                No active subscription yet.
               </p>
               <button
                 id="btn-manage-subscription"
@@ -195,12 +194,9 @@ export const SettingsView: React.FC = () => {
                 Billing History
               </h4>
               <div className="space-y-2.5 text-sm">
-                {DEFAULT_INVOICES.map((inv) => (
-                  <div key={inv.id} className="flex justify-between items-center text-xs">
-                    <span className="text-[var(--text-secondary)]">{inv.date}</span>
-                    <span className="font-semibold text-[var(--text-primary)]">{inv.amount}</span>
-                  </div>
-                ))}
+                <p className="py-4 text-center text-xs text-[var(--text-muted)]">
+                  No billing history yet.
+                </p>
               </div>
             </div>
 

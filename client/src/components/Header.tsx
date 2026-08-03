@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
   } = useApp();
 
   const unreadCount = notifications.filter((n) => !n.read).length;
-  const initials = (user?.name || 'Focus User')
+  const initials = (user?.name || '')
     .split(' ')
     .map((p) => p.charAt(0))
     .slice(0, 2)
@@ -78,7 +78,7 @@ export const Header: React.FC = () => {
           className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:ring-2 hover:ring-indigo-500 transition-all ml-1"
           title="User Profile"
         >
-          {initials || 'img'}
+          {initials || ''}
         </button>
       </div>
     </header>

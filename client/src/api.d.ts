@@ -12,3 +12,4 @@ export const endSession: (id: string, data?: Record<string, unknown>) => Promise
 export const cancelSession: (id: string) => Promise<AxiosResponse<any>>;
 export const getSessionHistory: () => Promise<AxiosResponse<any>>;
 export const getUserStats: () => Promise<AxiosResponse<any>>;
+export const getAchievements: () => Promise<AxiosResponse<any>>;

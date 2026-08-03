@@ -39,10 +39,22 @@ export const DashboardView: React.FC = () => {
   );
   const todayMinutes = todaySessions.reduce((acc, s) => acc + s.durationMinutes, 0);
 
-  const currentStreak = serverStats?.currentStreak ?? 7;
-  const longestStreak = serverStats?.longestStreak ?? 12;
+  const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const yesterdayMinutes = sessions
+    .filter((s) => new Date(s.completedAt).toISOString().slice(0, 10) === yesterdayStr)
+    .reduce((acc, s) => acc + s.durationMinutes, 0);
+  const vsYesterdayPct =
+    yesterdayMinutes > 0
+      ? Math.round(((todayMinutes - yesterdayMinutes) / yesterdayMinutes) * 100)
+      : todayMinutes > 0
+      ? 100
+      : 0;
+
+  const currentStreak = serverStats?.currentStreak ?? 0;
+  const longestStreak = serverStats?.longestStreak ?? 0;
   const dailyTarget = settings.dailyGoalMinutes;
-  const firstName = user?.name?.split(' ')[0] || 'Developer';
+  const firstName = user?.name?.split(' ')[0] || 'there';
+  const avgBlockMinutes = todaySessions.length > 0 ? Math.round(todayMinutes / todaySessions.length) : 0;
 
   const formatMinutes = (mins: number) => {
     const h = Math.floor(mins / 60);
@@ -62,7 +74,7 @@ export const DashboardView: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
-            Good Morning, {firstName} ⚡
+            Welcome {firstName} ⚡
           </h2>
           <p className="text-[var(--text-secondary)] mt-1 text-sm">
             Ready for another high-impact deep work flow? Here is your daily focus engine summary.
@@ -97,7 +109,10 @@ export const DashboardView: React.FC = () => {
             </span>
             <div className="flex items-center space-x-1 mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
               <TrendingUp className="w-3.5 h-3.5" />
-              <span>+18% vs yesterday</span>
+              <span>
+                {vsYesterdayPct >= 0 ? '+' : ''}
+                {vsYesterdayPct}% vs yesterday
+              </span>
             </div>
           </div>
         </div>
@@ -136,7 +151,7 @@ export const DashboardView: React.FC = () => {
             <span className="text-2xl font-bold text-[var(--text-primary)]">
               {todaySessions.length} Blocks
             </span>
-            <p className="text-xs text-[var(--text-muted)] mt-1">Avg 35m per block</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Avg {avgBlockMinutes}m per block</p>
           </div>
         </div>
 
@@ -244,31 +259,37 @@ export const DashboardView: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              {sessions.slice(0, 4).map((s) => (
-                <div
-                  key={s.id}
-                  className="flex items-center justify-between p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-xs"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="w-2 h-2 rounded-full bg-indigo-500" />
-                    <div>
-                      <p className="font-semibold text-[var(--text-primary)]">{s.title}</p>
-                      <p className="text-[var(--text-muted)] mt-0.5">{s.category}</p>
+              {sessions.length === 0 ? (
+                <p className="py-6 text-center text-xs text-[var(--text-muted)]">
+                  No focus sessions yet. Complete a session to see it here.
+                </p>
+              ) : (
+                sessions.slice(0, 4).map((s) => (
+                  <div
+                    key={s.id}
+                    className="flex items-center justify-between p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-xs"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                      <div>
+                        <p className="font-semibold text-[var(--text-primary)]">{s.title}</p>
+                        <p className="text-[var(--text-muted)] mt-0.5">{s.category}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-bold text-[var(--text-primary)]">
+                        {s.durationMinutes} mins
+                      </span>
+                      <p className="text-[var(--text-muted)] mt-0.5">
+                        {new Date(s.completedAt).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className="font-bold text-[var(--text-primary)]">
-                      {s.durationMinutes} mins
-                    </span>
-                    <p className="text-[var(--text-muted)] mt-0.5">
-                      {new Date(s.completedAt).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -288,23 +309,29 @@ export const DashboardView: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              {goals.slice(0, 3).map((g) => {
-                const pct = Math.min(100, Math.round((g.currentMinutes / g.targetMinutes) * 100));
-                return (
-                  <div key={g.id} className="p-3 bg-[var(--bg-card-subtle)] rounded-xl space-y-2">
-                    <div className="flex justify-between text-xs">
-                      <span className="font-medium text-[var(--text-primary)]">{g.title}</span>
-                      <span className="font-bold text-indigo-600 dark:text-indigo-400">{pct}%</span>
+              {goals.length === 0 ? (
+                <p className="py-6 text-center text-xs text-[var(--text-muted)]">
+                  No goals yet. Create one to start tracking progress.
+                </p>
+              ) : (
+                goals.slice(0, 3).map((g) => {
+                  const pct = Math.min(100, Math.round((g.currentMinutes / g.targetMinutes) * 100));
+                  return (
+                    <div key={g.id} className="p-3 bg-[var(--bg-card-subtle)] rounded-xl space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="font-medium text-[var(--text-primary)]">{g.title}</span>
+                        <span className="font-bold text-indigo-600 dark:text-indigo-400">{pct}%</span>
+                      </div>
+                      <div className="w-full bg-[var(--border-color)] h-1.5 rounded-full overflow-hidden">
+                        <div
+                          className="bg-indigo-600 h-full rounded-full transition-all duration-300"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="w-full bg-[var(--border-color)] h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="bg-indigo-600 h-full rounded-full transition-all duration-300"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           </div>
 

@@ -26,3 +26,4 @@ export const endSession = (id, data) => API.put(`/focus/${id}/end`, data);
 export const cancelSession = (id) => API.put(`/focus/${id}/cancel`);
 export const getSessionHistory = () => API.get("/focus/history");
 export const getUserStats = () => API.get("/focus/stats");
+export const getAchievements = () => API.get("/focus/achievements");

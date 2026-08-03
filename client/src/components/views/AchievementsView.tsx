@@ -18,8 +18,8 @@ export const AchievementsView: React.FC = () => {
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
-  const level = serverStats?.level ?? 5;
-  const points = serverStats?.points ?? 1840;
+  const level = serverStats?.level ?? 1;
+  const points = serverStats?.points ?? 0;
   const nextLevelXp = level * 500;
   const levelProgress = Math.min(100, Math.round(((points % 500) / 500) * 100));
   const xpToNext = Math.max(0, nextLevelXp - points);
@@ -106,72 +106,80 @@ export const AchievementsView: React.FC = () => {
       </div>
 
       {/* Achievements Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((ach) => (
-          <div
-            key={ach.id}
-            className={`bg-[var(--bg-card)] border rounded-2xl p-6 shadow-xs flex flex-col justify-between transition-all ${
-              ach.unlocked
-                ? 'border-indigo-200 dark:border-indigo-900/60 ring-1 ring-indigo-500/20'
-                : 'border-[var(--border-color)] opacity-75'
-            }`}
-          >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div
-                  className={`p-3 rounded-2xl ${
-                    ach.unlocked
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'bg-[var(--bg-card-subtle)] text-[var(--text-muted)]'
-                  }`}
-                >
-                  {renderIcon(ach.iconName)}
+      {filtered.length === 0 ? (
+        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-10 text-center">
+          <p className="text-sm text-[var(--text-muted)]">
+            No achievements yet. Complete focus sessions to start earning badges.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((ach) => (
+            <div
+              key={ach.id}
+              className={`bg-[var(--bg-card)] border rounded-2xl p-6 shadow-xs flex flex-col justify-between transition-all ${
+                ach.unlocked
+                  ? 'border-indigo-200 dark:border-indigo-900/60 ring-1 ring-indigo-500/20'
+                  : 'border-[var(--border-color)] opacity-75'
+              }`}
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div
+                    className={`p-3 rounded-2xl ${
+                      ach.unlocked
+                        ? 'bg-indigo-600 text-white shadow-sm'
+                        : 'bg-[var(--bg-card-subtle)] text-[var(--text-muted)]'
+                    }`}
+                  >
+                    {renderIcon(ach.iconName)}
+                  </div>
+
+                  {ach.unlocked ? (
+                    <span className="flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-md">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Unlocked</span>
+                    </span>
+                  ) : (
+                    <span className="flex items-center space-x-1 text-xs font-semibold text-[var(--text-muted)] bg-[var(--bg-card-subtle)] px-2.5 py-1 rounded-md">
+                      <Lock className="w-3.5 h-3.5" />
+                      <span>Locked</span>
+                    </span>
+                  )}
                 </div>
 
+                <div>
+                  <h4 className="font-bold text-base text-[var(--text-primary)]">{ach.title}</h4>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
+                    {ach.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[var(--border-color)]">
                 {ach.unlocked ? (
-                  <span className="flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-md">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>Unlocked</span>
-                  </span>
+                  <p className="text-[11px] font-medium text-[var(--text-muted)]">
+                    Unlocked on {ach.unlockedAt || 'Recently'}
+                  </p>
                 ) : (
-                  <span className="flex items-center space-x-1 text-xs font-semibold text-[var(--text-muted)] bg-[var(--bg-card-subtle)] px-2.5 py-1 rounded-md">
-                    <Lock className="w-3.5 h-3.5" />
-                    <span>Locked</span>
-                  </span>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-[11px] font-semibold text-[var(--text-muted)]">
+                      <span>Progress</span>
+                      <span>{ach.progress}%</span>
+                    </div>
+                    <div className="w-full bg-[var(--bg-card-subtle)] h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-indigo-600 h-full rounded-full"
+                        style={{ width: `${ach.progress}%` }}
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
-
-              <div>
-                <h4 className="font-bold text-base text-[var(--text-primary)]">{ach.title}</h4>
-                <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
-                  {ach.description}
-                </p>
-              </div>
             </div>
-
-            <div className="mt-6 pt-4 border-t border-[var(--border-color)]">
-              {ach.unlocked ? (
-                <p className="text-[11px] font-medium text-[var(--text-muted)]">
-                  Unlocked on {ach.unlockedAt || 'Recently'}
-                </p>
-              ) : (
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-[11px] font-semibold text-[var(--text-muted)]">
-                    <span>Progress</span>
-                    <span>{ach.progress}%</span>
-                  </div>
-                  <div className="w-full bg-[var(--bg-card-subtle)] h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className="bg-indigo-600 h-full rounded-full"
-                      style={{ width: `${ach.progress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

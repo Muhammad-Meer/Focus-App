@@ -8,8 +8,8 @@ export const ProfileModal: React.FC = () => {
   if (!profileModalOpen) return null;
 
   const totalMinutes = sessions.reduce((sum, s) => sum + s.durationMinutes, 0);
-  const displayName = user?.name || 'Focus User';
-  const displayEmail = user?.email || 'member@zaf.focus';
+  const displayName = user?.name || '';
+  const displayEmail = user?.email || '';
   const initials = displayName
     .split(' ')
     .map((p) => p.charAt(0))
@@ -29,14 +29,14 @@ export const ProfileModal: React.FC = () => {
 
         <div className="flex flex-col items-center text-center space-y-3">
           <div className="w-20 h-20 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold shadow-md">
-            {initials || 'img'}
+            {initials || ''}
           </div>
           <div>
             <h3 className="text-xl font-bold text-[var(--text-primary)]">{displayName}</h3>
             <p className="text-xs text-[var(--text-muted)] font-medium">{displayEmail}</p>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full">
-            {serverStats?.level ? `Level ${serverStats.level}` : 'Pro Plan Member'}
+            {serverStats?.level ? `Level ${serverStats.level}` : 'Member'}
           </span>
         </div>
 

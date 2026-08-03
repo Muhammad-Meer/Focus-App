@@ -26,6 +26,7 @@ import {
   getMe,
   getUserStats,
   getSessionHistory,
+  getAchievements,
   createSession,
   startSession,
   pauseSession,
@@ -133,6 +134,8 @@ const BADGE_ICON_MAP: Record<string, string> = {
   streak_7: 'Flame',
   streak_30: 'Crown',
   hours_100: 'Trophy',
+  night_owl: 'Moon',
+  marathoner: 'Award',
 };
 
 const getDurationMinutes = (mode: FocusMode, settings: UserSettings): number => {
@@ -155,12 +158,11 @@ interface BackendSession {
 
 const mapBackendSession = (s: BackendSession): FocusSession => ({
   id: s._id || `s-${Date.now()}`,
-  title: s.title || 'Deep Focus Session',
-  category: s.category || 'Coding',
+  title: s.title || '',
+  category: s.category || '',
   durationMinutes: s.actualDuration || s.plannedDuration || 0,
   completedAt: s.endTime || s.createdAt || new Date().toISOString(),
   mode: (s.mode as FocusMode) || 'pomodoro',
-  rating: 5,
 });
 
 export const AppProvider: React.FC<{
@@ -183,7 +185,7 @@ export const AppProvider: React.FC<{
   const [timerMode, setTimerModeState] = useState<FocusMode>('pomodoro');
   const [timeLeft, setTimeLeft] = useState<number>(settings.pomodoroDuration * 60);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [activeTaskTitle, setActiveTaskTitle] = useState<string>('Deep System Architecture & UI Polish');
+  const [activeTaskTitle, setActiveTaskTitle] = useState<string>('');
   const [activeCategory, setActiveCategory] = useState<string>('Coding');
 
   const activeBackendSession = useRef<string | null>(null);
@@ -257,6 +259,16 @@ export const AppProvider: React.FC<{
       }
 
       try {
+        const { data } = await getAchievements();
+        if (!cancelled && data?.achievements) {
+          setAchievements(data.achievements);
+          saveStoredAchievements(data.achievements);
+        }
+      } catch {
+        // ignore
+      }
+
+      try {
         const { data } = await getSessionHistory();
         if (!cancelled && Array.isArray(data) && data.length > 0) {
           const mapped = data.map(mapBackendSession);
@@ -312,12 +324,11 @@ export const AppProvider: React.FC<{
     if (timerMode === 'pomodoro' || timerMode === 'custom') {
       const newSession: FocusSession = {
         id: `s-${Date.now()}`,
-        title: activeTaskTitle || 'Deep Focus Session',
+        title: activeTaskTitle,
         category: activeCategory,
         durationMinutes: durationMins,
         completedAt: new Date().toISOString(),
         mode: timerMode,
-        rating: 5,
       };
 
       setSessions((prev) => {
@@ -613,7 +624,7 @@ export const AppProvider: React.FC<{
     let csvContent = 'ID,Title,Category,DurationMinutes,CompletedAt,Mode,Rating\n';
     sessions.forEach((s) => {
       const title = `"${s.title.replace(/"/g, '""')}"`;
-      csvContent += `${s.id},${title},${s.category},${s.durationMinutes},${s.completedAt},${s.mode},${s.rating || 5}\n`;
+      csvContent += `${s.id},${title},${s.category},${s.durationMinutes},${s.completedAt},${s.mode},${s.rating ?? ''}\n`;
     });
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);

@@ -13,7 +13,6 @@ export const StatsView: React.FC = () => {
 
   // Group weekly data for bar charts
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const mockWeeklyHours = [4.5, 6.0, 5.2, 7.1, 4.0, 2.5, 3.8];
 
   // Real weekly totals (hours per weekday) from completed sessions
   const dayTotals = new Array(7).fill(0);
@@ -30,9 +29,9 @@ export const StatsView: React.FC = () => {
   });
 
   const hasRealData = dayTotals.some((v) => v > 0);
-  const weeklyHours = hasRealData ? dayTotals : mockWeeklyHours;
+  const weeklyHours = dayTotals;
   const weeklyTotal = weeklyHours.reduce((a, b) => a + b, 0).toFixed(1);
-  const maxWeeklyHour = Math.max(...weeklyHours);
+  const maxWeeklyHour = Math.max(...weeklyHours) || 1;
 
   // Category breakdown calculation
   const categoryTotals: Record<string, number> = {};
@@ -56,7 +55,7 @@ export const StatsView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h2 className="text-3xl font-bold tracking-tight text-(--text-primary)">
             Focus Analytics & Stats
           </h2>
           <p className="text-[var(--text-secondary)] mt-1 text-sm">
@@ -86,65 +85,77 @@ export const StatsView: React.FC = () => {
                 Total hours logged per day this week
               </p>
             </div>
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-3 py-1 rounded-lg">
+            <span className="text-xs font-bold    px-3 py-1 rounded-lg">
               {weeklyTotal} Hours Total
             </span>
-          </div>
+          </div>   
 
           {/* Bar Chart Canvas Simulation */}
           <div className="h-48 flex items-end justify-between gap-3 pt-6 px-2">
-            {daysOfWeek.map((day, idx) => {
-              const val = mockWeeklyHours[idx];
-              const heightPct = (val / maxWeeklyHour) * 100;
-              return (
-                <div key={day} className="flex-1 flex flex-col items-center gap-2 group">
-                  <span className="text-[10px] font-bold text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity">
-                    {val}h
-                  </span>
-                  <div className="w-full bg-[var(--bg-card-subtle)] h-36 rounded-xl flex items-end overflow-hidden p-1">
-                    <div
-                      className="w-full bg-gradient-to-t from-indigo-600 to-indigo-500 rounded-lg transition-all duration-500 group-hover:from-indigo-500 group-hover:to-indigo-400"
-                      style={{ height: `${heightPct}%` }}
-                    />
+            {!hasRealData ? (
+              <div className="w-full h-full flex items-center justify-center text-xs text-[var(--text-muted)]">
+                No focus data yet this week. Complete a session to start tracking.
+              </div>
+            ) : (
+              daysOfWeek.map((day, idx) => {
+                const val = weeklyHours[idx];
+                const heightPct = (val / maxWeeklyHour) * 100;
+                return (
+                  <div key={day} className="flex-1 flex flex-col items-center gap-2 group">
+                    <span className="text-[10px] font-bold text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity">
+                      {val}h
+                    </span>
+                    <div className="w-full bg-[var(--bg-card-subtle)] h-36 rounded-xl flex items-end overflow-hidden p-1">
+                      <div
+                        className="w-full bg-gradient-to-t from-indigo-600 to-indigo-500 rounded-lg transition-all duration-500 group-hover:from-indigo-500 group-hover:to-indigo-400"
+                        style={{ height: `${heightPct}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-semibold text-[var(--text-secondary)]">
+                      {day}
+                    </span>
                   </div>
-                  <span className="text-xs font-semibold text-[var(--text-secondary)]">
-                    {day}
-                  </span>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
         {/* Category Breakdown Donut / Progress */}
         <div className="bg-[var(--bg-card)] border border-[var(--border-color)] p-6 rounded-2xl shadow-xs space-y-5">
           <div className="flex items-center space-x-2">
-            <PieChartIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <PieChartIcon className="w-5 h-5 text-green-700 dark:text-indigo-400" />
             <h3 className="font-semibold text-base text-[var(--text-primary)]">
               Focus Distribution
             </h3>
           </div>
 
           <div className="space-y-4">
-            {Object.entries(categoryTotals).map(([cat, mins]) => {
-              const pct = Math.round((mins / totalMinutesAll) * 100);
-              return (
-                <div key={cat} className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-medium">
-                    <span className="text-[var(--text-primary)]">{cat}</span>
-                    <span className="text-[var(--text-muted)]">
-                      {mins} mins ({pct}%)
-                    </span>
+            {Object.keys(categoryTotals).length === 0 ? (
+              <p className="py-6 text-center text-xs text-[var(--text-muted)]">
+                No focus data yet.
+              </p>
+            ) : (
+              Object.entries(categoryTotals).map(([cat, mins]) => {
+                const pct = Math.round((mins / totalMinutesAll) * 100);
+                return (
+                  <div key={cat} className="space-y-1.5">
+                    <div className="flex justify-between text-xs font-medium">
+                      <span className="text-[var(--text-primary)]">{cat}</span>
+                      <span className="text-[var(--text-muted)]">
+                        {mins} mins ({pct}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-[var(--bg-card-subtle)] h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-indigo-600 h-full rounded-full"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full bg-[var(--bg-card-subtle)] h-2 rounded-full overflow-hidden">
-                    <div
-                      className="bg-indigo-600 h-full rounded-full"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
       </div>
@@ -170,7 +181,7 @@ export const StatsView: React.FC = () => {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="bg-[var(--bg-card-subtle)] border border-[var(--border-color)] text-xs font-medium text-[var(--text-primary)] rounded-xl px-3 py-2 focus:outline-none cursor-pointer"
+              className="bg-[var(--bg-card-subtle)]bg-[var(--bg-card-subtle)]bg-[var(--bg-card-subtle)] border  text-xs font-medium  rounded-xl px-3 py-2 focus:outline-none cursor-pointer"
             >
               <option value="All">All Categories</option>
               <option value="Coding">Coding</option>
@@ -208,7 +219,7 @@ export const StatsView: React.FC = () => {
                       {s.title}
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold text-[11px]">
+                      <span className="px-2.5 py-1 rounded-md     font-semibold text-[11px]">
                         {s.category}
                       </span>
                     </td>

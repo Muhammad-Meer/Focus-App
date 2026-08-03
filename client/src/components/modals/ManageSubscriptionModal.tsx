@@ -21,9 +21,9 @@ export const ManageSubscriptionModal: React.FC = () => {
           <span className="text-[10px] font-bold tracking-wider uppercase bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-md">
             SUBSCRIPTION MANAGEMENT
           </span>
-          <h3 className="text-2xl font-bold text-[var(--text-primary)] mt-2">Zenith Pro Tier</h3>
+          <h3 className="text-2xl font-bold text-[var(--text-primary)] mt-2">Free Tier</h3>
           <p className="text-xs text-[var(--text-secondary)] mt-1">
-            Your Pro membership renews automatically on Oct 12, 2024 for $12.00/month.
+            You're on the free plan. Upgrade and billing details will appear here once available.
           </p>
         </div>
 
@@ -46,8 +46,8 @@ export const ManageSubscriptionModal: React.FC = () => {
           <div className="flex items-center space-x-3">
             <CreditCard className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <div>
-              <p className="font-semibold text-[var(--text-primary)]">Visa ending in 4242</p>
-              <p className="text-[var(--text-muted)]">Expires 12/2027</p>
+              <p className="font-semibold text-[var(--text-primary)]">No payment method on file</p>
+              <p className="text-[var(--text-muted)]">Add a payment method to enable billing.</p>
             </div>
           </div>
           <button className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
