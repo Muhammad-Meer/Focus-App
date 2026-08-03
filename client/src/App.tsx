@@ -31,7 +31,7 @@ const MainLayout: React.FC = () => {
   const { activeRoute } = useApp();
 
   return (
-    <div className="flex min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-200">
+    <div className="flex min-h-screen bg-(--bg-page) text-(--text-primary) transition-colors duration-200">
       {/* Permanent Sidebar */}
       <Sidebar />
 
