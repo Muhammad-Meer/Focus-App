@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppProvider, AuthUser, useApp } from './context/AppContext';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { AuthPage } from './components/auth/AuthPage';
+import { LandingPage } from './components/landing/LandingPage';
 import { SettingsView } from './components/views/SettingsView';
 import { DashboardView } from './components/views/DashboardView';
 import { FocusView } from './components/views/FocusView';
@@ -31,7 +32,7 @@ const MainLayout: React.FC = () => {
   const { activeRoute } = useApp();
 
   return (
-    <div className="flex min-h-screen bg-(--bg-page) text-(--text-primary) transition-colors duration-200">
+    <div className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
       {/* Permanent Sidebar */}
       <Sidebar />
 
@@ -62,6 +63,15 @@ const MainLayout: React.FC = () => {
 
 export default function App() {
   const [authed, setAuthed] = useState<AuthUser | null>(readStoredUser);
+  const [route, setRoute] = useState<'landing' | 'app'>(() =>
+    window.location.hash === '#/app' ? 'app' : 'landing',
+  );
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(window.location.hash === '#/app' ? 'app' : 'landing');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   const handleAuthed = (user: AuthUser) => {
     localStorage.setItem('user', JSON.stringify(user));
@@ -72,6 +82,10 @@ export default function App() {
     localStorage.removeItem('user');
     setAuthed(null);
   };
+
+  if (route === 'landing') {
+    return <LandingPage />;
+  }
 
   if (!authed) {
     return <AuthPage onAuthed={handleAuthed} />;

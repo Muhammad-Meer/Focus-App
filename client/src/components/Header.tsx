@@ -22,10 +22,10 @@ export const Header: React.FC = () => {
     .toUpperCase();
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-transparent border-b border-transparent md:border-[var(--border-color)]">
+    <header className="flex items-center justify-between px-6 py-4 bg-transparent border-b border-transparent md:border-border">
       {/* Page Title Header (matching top left in screenshot: "Zaf Focus") */}
       <div>
-        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
           {activeRoute === 'settings'
             ? 'Zaf Focus'
             : activeRoute === 'dashboard'
@@ -47,12 +47,12 @@ export const Header: React.FC = () => {
           <button
             id="btn-notifications-toggle"
             onClick={() => setNotificationsOpen(!notificationsOpen)}
-            className="p-2 rounded-xl text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)] transition-colors relative"
+            className="p-2 rounded-xl text-secondary hover:bg-surface-subtle hover:text-foreground transition-colors relative"
             title="Notifications"
           >
             <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-600 rounded-full ring-2 ring-[var(--bg-page)]" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-background" />
             )}
           </button>
         </div>
@@ -63,8 +63,8 @@ export const Header: React.FC = () => {
           onClick={() => setActiveRoute('settings')}
           className={`p-2 rounded-xl transition-colors ${
             activeRoute === 'settings'
-              ? 'text-indigo-600 bg-indigo-50'
-              : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)]'
+              ? 'text-primary bg-primary-soft'
+              : 'text-secondary hover:bg-surface-subtle hover:text-foreground'
           }`}
           title="Settings"
         >
@@ -75,7 +75,7 @@ export const Header: React.FC = () => {
         <button
           id="btn-user-profile"
           onClick={() => setProfileModalOpen(true)}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-700 text-xs font-semibold hover:ring-2 hover:ring-indigo-500 transition-all ml-1"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-subtle text-secondary text-xs font-semibold hover:ring-2 hover:ring-primary transition-all ml-1"
           title="User Profile"
         >
           {initials || ''}

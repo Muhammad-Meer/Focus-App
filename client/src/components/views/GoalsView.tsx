@@ -28,17 +28,17 @@ export const GoalsView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Focus Goals
           </h2>
-          <p className="text-[var(--text-secondary)] mt-1 text-sm">
+          <p className="text-secondary mt-1 text-sm">
             Set target focus hours for daily routines, weekly sprints, and active projects.
           </p>
         </div>
 
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center space-x-2  hover:bg-indigo-700 bg-indigo-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+          className="flex items-center space-x-2 hover:bg-primary-hover bg-primary text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Goal</span>
@@ -49,12 +49,12 @@ export const GoalsView: React.FC = () => {
       {showAddForm && (
         <form
           onSubmit={handleCreateGoal}
-          className="bg-[var(--bg-card)] border border-indigo-200 p-6 rounded-2xl shadow-sm space-y-4 animate-fadeIn"
+          className="bg-surface border border-primary/20 p-6 rounded-2xl shadow-sm space-y-4 animate-fadeIn"
         >
-          <h3 className="font-bold text-base text-[var(--text-primary)]">Add New Focus Goal</h3>
+          <h3 className="font-bold text-base text-foreground">Add New Focus Goal</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
+              <label className="block text-xs font-semibold text-secondary mb-1">
                 Goal Title
               </label>
               <input
@@ -62,19 +62,19 @@ export const GoalsView: React.FC = () => {
                 placeholder="e.g. Finish Core Refactoring"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
-                className="w-full px-4 py-2 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-xs font-medium text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 bg-surface-subtle border border-border rounded-xl text-xs font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
+              <label className="block text-xs font-semibold text-secondary mb-1">
                 Category
               </label>
               <select
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-xs font-medium text-[var(--text-primary)] focus:outline-none cursor-pointer"
+                className="w-full px-3 py-2 bg-surface-subtle border border-border rounded-xl text-xs font-medium text-foreground focus:outline-none cursor-pointer"
               >
                 <option value="Coding">Coding</option>
                 <option value="Design">Design</option>
@@ -86,7 +86,7 @@ export const GoalsView: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
+              <label className="block text-xs font-semibold text-secondary mb-1">
                 Target Hours
               </label>
               <input
@@ -96,7 +96,7 @@ export const GoalsView: React.FC = () => {
                 step="0.5"
                 value={newTargetHours}
                 onChange={(e) => setNewTargetHours(e.target.value)}
-                className="w-full px-4 py-2 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-xs font-medium text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 bg-surface-subtle border border-border rounded-xl text-xs font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
           </div>
@@ -105,13 +105,13 @@ export const GoalsView: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowAddForm(false)}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-[var(--text-muted)] hover:bg-[var(--bg-card-subtle)]"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-muted hover:bg-surface-subtle"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-700 bg-indigo-600 text-white shadow-xs"
+              className="px-5 py-2 rounded-xl text-xs font-semibold hover:bg-primary-hover bg-primary text-white shadow-xs"
             >
               Save Goal
             </button>
@@ -121,8 +121,8 @@ export const GoalsView: React.FC = () => {
 
       {/* Goals List */}
       {goals.length === 0 ? (
-        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-10 text-center">
-          <p className="text-sm text-[var(--text-muted)]">
+        <div className="bg-surface border border-border rounded-2xl p-10 text-center">
+          <p className="text-sm text-muted">
             No goals yet. Create your first goal to start tracking focus time.
           </p>
         </div>
@@ -136,18 +136,18 @@ export const GoalsView: React.FC = () => {
           return (
             <div
               key={goal.id}
-              className={`bg-[var(--bg-card)] border rounded-2xl p-6 shadow-xs space-y-4 transition-all ${
+              className={`bg-surface border rounded-2xl p-6 shadow-xs space-y-4 transition-all ${
                 goal.completed
-                  ? 'border-emerald-200 bg-emerald-50/20'
-                  : 'border-[var(--border-color)]'
+                  ? 'border-success/30 bg-success-soft/60'
+                  : 'border-border'
               }`}
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-primary-strong bg-primary-soft px-2.5 py-1 rounded-md">
                     {goal.category}
                   </span>
-                  <h3 className="font-bold text-lg text-[var(--text-primary)] mt-2">
+                  <h3 className="font-bold text-lg text-foreground mt-2">
                     {goal.title}
                   </h3>
                 </div>
@@ -156,8 +156,8 @@ export const GoalsView: React.FC = () => {
                   onClick={() => toggleGoal(goal.id)}
                   className={`p-2 rounded-xl transition-colors cursor-pointer ${
                     goal.completed
-                      ? 'bg-emerald-600 text-white'
-                      : 'border border-[var(--border-color)] text-[var(--text-muted)] hover:text-emerald-600'
+                      ? 'bg-success-solid text-white'
+                      : 'border border-border text-muted hover:text-success'
                   }`}
                   title={goal.completed ? 'Completed!' : 'Mark as Completed'}
                 >
@@ -168,15 +168,15 @@ export const GoalsView: React.FC = () => {
               {/* Progress Slider / Meter */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-[var(--text-secondary)]">
+                  <span className="text-secondary">
                     {currentHrs} / {targetHrs} hours
                   </span>
-                  <span className="text-indigo-600 font-bold">{pct}%</span>
+                  <span className="text-primary font-bold">{pct}%</span>
                 </div>
-                <div className="w-full bg-[var(--bg-card-subtle)] h-2.5 rounded-full overflow-hidden">
+                <div className="w-full bg-surface-subtle h-2.5 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
-                      goal.completed ? 'bg-emerald-500' : 'bg-indigo-600'
+                      goal.completed ? 'bg-success-solid' : 'bg-primary'
                     }`}
                     style={{ width: `${pct}%` }}
                   />
@@ -184,18 +184,18 @@ export const GoalsView: React.FC = () => {
               </div>
 
               {/* Quick Log Progress Adjustment */}
-              <div className="flex items-center justify-between pt-3 border-t border-[var(--border-color)] text-xs">
-                <span className="text-[var(--text-muted)]">Log manual hours:</span>
+              <div className="flex items-center justify-between pt-3 border-t border-border text-xs">
+                <span className="text-muted">Log manual hours:</span>
                 <div className="flex space-x-1.5">
                   <button
                     onClick={() => updateGoalProgress(goal.id, 30)}
-                    className="px-2.5 py-1 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card-subtle)] hover:bg-[var(--border-color)] text-[var(--text-primary)] font-medium"
+                    className="px-2.5 py-1 rounded-lg border border-border bg-surface-subtle hover:bg-border text-foreground font-medium"
                   >
                     +30m
                   </button>
                   <button
                     onClick={() => updateGoalProgress(goal.id, 60)}
-                    className="px-2.5 py-1 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card-subtle)] hover:bg-[var(--border-color)] text-[var(--text-primary)] font-medium"
+                    className="px-2.5 py-1 rounded-lg border border-border bg-surface-subtle hover:bg-border text-foreground font-medium"
                   >
                     +1h
                   </button>

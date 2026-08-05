@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Mail, Lock, User as UserIcon, LogIn, UserPlus } from 'lucide-react';
+import { Sparkles, Mail, Lock, User as UserIcon, LogIn, UserPlus, ArrowLeft } from 'lucide-react';
 import { login, signup } from '../../api';
 import { AuthUser } from '../../context/AppContext';
 
@@ -39,16 +39,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl grid md:grid-cols-2 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-3xl shadow-soft overflow-hidden animate-fadeIn">
+    <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl grid md:grid-cols-2 bg-surface border border-border rounded-3xl shadow-soft overflow-hidden animate-fadeIn">
         {/* Brand Side */}
-        <div className="hidden md:flex flex-col justify-between p-10 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 text-white">
+        <div className="hidden md:flex flex-col justify-between p-10 bg-gradient-to-br from-primary via-primary-hover to-accent text-white">
           <div>
             <div className="flex items-center space-x-2">
               <Sparkles className="w-7 h-7 fill-white/20" />
               <span className="font-bold text-2xl tracking-tight">Zaf Focus</span>
             </div>
-            <p className="text-xs font-medium tracking-wide text-indigo-200 mt-1">
+            <p className="text-xs font-medium tracking-wide text-white/70 mt-1">
               Deep Work Engine
             </p>
           </div>
@@ -59,7 +59,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
               <br />
               Build better habits.
             </h2>
-            <p className="text-sm text-indigo-100 leading-relaxed">
+            <p className="text-sm text-white/80 leading-relaxed">
               Immerse yourself in distraction-free deep work sessions with ambient sound,
               streaks, goals, and detailed focus analytics.
             </p>
@@ -73,7 +73,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
             ].map((s) => (
               <div key={s.label} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center ring-1 ring-white/20">
                 <p className="text-xl font-extrabold">{s.value}</p>
-                <p className="text-[11px] text-indigo-200 font-medium mt-0.5">{s.label}</p>
+                <p className="text-[11px] text-white/70 font-medium mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
@@ -81,22 +81,33 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
 
         {/* Form Side */}
         <div className="p-8 sm:p-10 flex flex-col justify-center">
+          <button
+            type="button"
+            onClick={() => {
+              window.location.hash = '';
+            }}
+            className="self-start mb-6 inline-flex items-center space-x-1.5 text-xs font-medium text-muted hover:text-primary transition-colors cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to home</span>
+          </button>
+
           <div className="md:hidden flex items-center space-x-2 mb-8">
-            <Sparkles className="w-6 h-6 text-indigo-600" />
+            <Sparkles className="w-6 h-6 text-primary" />
             <span className="font-bold text-xl tracking-tight">Zaf Focus</span>
           </div>
 
           <h2 className="text-2xl font-bold tracking-tight">
             {mode === 'login' ? 'Welcome back' : 'Create your account'}
           </h2>
-          <p className="text-sm text-[var(--text-secondary)] mt-1 mb-6">
+          <p className="text-sm text-secondary mt-1 mb-6">
             {mode === 'login'
               ? 'Sign in to continue your deep work journey.'
               : 'Start building your focus streak today.'}
           </p>
 
           {error && (
-            <div className="mb-4 px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-medium text-rose-700">
+            <div className="mb-4 px-4 py-3 rounded-xl bg-error-soft border border-error/30 text-xs font-medium text-error">
               {error}
             </div>
           )}
@@ -104,7 +115,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'signup' && (
               <div className="relative">
-                <UserIcon className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <UserIcon className="w-4 h-4 text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   name="name"
                   type="text"
@@ -112,13 +123,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
                   value={form.name}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-sm font-medium text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-3 bg-surface-subtle border border-border rounded-xl text-sm font-medium text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             )}
 
             <div className="relative">
-              <Mail className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 name="email"
                 type="email"
@@ -126,12 +137,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full pl-10 pr-4 py-3 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-sm font-medium text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-4 py-3 bg-surface-subtle border border-border rounded-xl text-sm font-medium text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
             <div className="relative">
-              <Lock className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Lock className="w-4 h-4 text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 name="password"
                 type="password"
@@ -140,26 +151,26 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
                 onChange={handleChange}
                 required
                 minLength={mode === 'signup' ? 6 : undefined}
-                className="w-full pl-10 pr-4 py-3 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-sm font-medium text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-4 py-3 bg-surface-subtle border border-border rounded-xl text-sm font-medium text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-3 rounded-xl shadow-sm transition-all cursor-pointer"
+              className="w-full flex items-center justify-center space-x-2 bg-primary hover:bg-primary-hover disabled:opacity-60 text-white font-semibold py-3 rounded-xl shadow-sm transition-all cursor-pointer"
             >
               {mode === 'login' ? <LogIn className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
               <span>{loading ? (mode === 'login' ? 'Signing in...' : 'Creating account...') : mode === 'login' ? 'Sign In' : 'Sign Up'}</span>
             </button>
           </form>
 
-          <p className="text-xs text-[var(--text-muted)] mt-6 text-center">
+          <p className="text-xs text-muted mt-6 text-center">
             {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
             <button
               type="button"
               onClick={() => switchMode(mode === 'login' ? 'signup' : 'login')}
-              className="font-semibold text-indigo-600 hover:underline cursor-pointer"
+              className="font-semibold text-primary hover:underline cursor-pointer"
             >
               {mode === 'login' ? 'Sign Up' : 'Sign In'}
             </button>

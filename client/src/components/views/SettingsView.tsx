@@ -27,29 +27,29 @@ export const SettingsView: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-10 pb-16 animate-fadeIn" id="settings-view">
       {/* Settings Header */}
       <div>
-        <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+        <h2 className="text-3xl font-bold tracking-tight text-foreground">
           Settings
         </h2>
-        <p className="text-[var(--text-secondary)] mt-1.5 text-base">
+        <p className="text-secondary mt-1.5 text-base">
           Customize your deep work environment and manage your account.
         </p>
       </div>
 
       {/* 1. General Section */}
       <section className="space-y-4" id="section-general">
-        <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <Sliders className="w-5 h-5 text-indigo-600" />
+        <div className="flex items-center space-x-2 text-xl font-semibold text-foreground">
+          <Sliders className="w-5 h-5 text-primary" />
           <h3>General</h3>
         </div>
 
-        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl divide-y divide-[var(--border-color)] shadow-xs">
+        <div className="bg-surface border border-border rounded-2xl divide-y divide-border shadow-xs">
           {/* Language row */}
           <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h4 className="font-semibold text-[var(--text-primary)] text-base">
+              <h4 className="font-semibold text-foreground text-base">
                 Language
               </h4>
-              <p className="text-sm text-[var(--text-secondary)] mt-0.5">
+              <p className="text-sm text-secondary mt-0.5">
                 Primary display language for the application.
               </p>
             </div>
@@ -59,7 +59,7 @@ export const SettingsView: React.FC = () => {
                 id="select-language"
                 value={settings.language}
                 onChange={(e) => updateSettings({ language: e.target.value })}
-                className="appearance-none bg-[var(--bg-card-subtle)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm font-medium rounded-xl px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                className="appearance-none bg-surface-subtle border border-border text-foreground text-sm font-medium rounded-xl px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
               >
                 <option value="English (US)">English (US)</option>
                 <option value="English (UK)">English (UK)</option>
@@ -68,17 +68,17 @@ export const SettingsView: React.FC = () => {
                 <option value="French (FR)">French (FR)</option>
                 <option value="Japanese (JP)">Japanese (JP)</option>
               </select>
-              <ChevronDown className="w-4 h-4 text-[var(--text-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-4 h-4 text-muted absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 
           {/* Startup Behavior row */}
           <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h4 className="font-semibold text-[var(--text-primary)] text-base">
+              <h4 className="font-semibold text-foreground text-base">
                 Startup Behavior
               </h4>
-              <p className="text-sm text-[var(--text-secondary)] mt-0.5">
+              <p className="text-sm text-secondary mt-0.5">
                 Automatically start Zenith Focus when your computer boots.
               </p>
             </div>
@@ -87,8 +87,8 @@ export const SettingsView: React.FC = () => {
             <button
               id="toggle-startup-behavior"
               onClick={() => updateSettings({ autoStartOnBoot: !settings.autoStartOnBoot })}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-                settings.autoStartOnBoot ? 'bg-indigo-600' : 'bg-slate-300'
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                settings.autoStartOnBoot ? 'bg-primary' : 'bg-border'
               }`}
               role="switch"
               aria-checked={settings.autoStartOnBoot}
@@ -105,14 +105,14 @@ export const SettingsView: React.FC = () => {
 
       {/* 2. Subscription Section */}
       <section className="space-y-4" id="section-subscription">
-        <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <CreditCard className="w-5 h-5 text-indigo-600" />
+        <div className="flex items-center space-x-2 text-xl font-semibold text-foreground">
+          <CreditCard className="w-5 h-5 text-primary" />
           <h3>Subscription</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Card: Current Plan */}
-          <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between min-h-[160px] relative overflow-hidden">
+          <div className="bg-gradient-to-br from-primary to-primary-hover text-white rounded-2xl p-6 shadow-md flex flex-col justify-between min-h-[160px] relative overflow-hidden">
             <div>
               <span className="inline-block bg-white/20 text-white text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase mb-3">
                 CURRENT PLAN
@@ -121,13 +121,13 @@ export const SettingsView: React.FC = () => {
             </div>
 
             <div className="flex items-end justify-between mt-6">
-              <p className="text-xs text-indigo-100 font-medium">
+              <p className="text-xs text-white/80 font-medium">
                 No active subscription yet.
               </p>
               <button
                 id="btn-manage-subscription"
                 onClick={() => setBillingModalOpen(true)}
-                className="bg-white text-indigo-700 hover:bg-indigo-50 text-xs font-semibold px-4 py-2 rounded-xl transition-colors shadow-xs cursor-pointer"
+                className="bg-white text-primary hover:bg-primary-soft text-xs font-semibold px-4 py-2 rounded-xl transition-colors shadow-xs cursor-pointer"
               >
                 Manage
               </button>
@@ -135,13 +135,13 @@ export const SettingsView: React.FC = () => {
           </div>
 
           {/* Right Card: Billing History */}
-          <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+          <div className="bg-surface border border-border rounded-2xl p-6 shadow-xs flex flex-col justify-between">
             <div>
-              <h4 className="font-semibold text-[var(--text-primary)] text-base mb-3">
+              <h4 className="font-semibold text-foreground text-base mb-3">
                 Billing History
               </h4>
               <div className="space-y-2.5 text-sm">
-                <p className="py-4 text-center text-xs text-[var(--text-muted)]">
+                <p className="py-4 text-center text-xs text-muted">
                   No billing history yet.
                 </p>
               </div>
@@ -150,7 +150,7 @@ export const SettingsView: React.FC = () => {
             <button
               id="btn-download-invoices"
               onClick={exportDataCSV}
-              className="text-xs font-semibold text-indigo-600 hover:underline self-start mt-4 cursor-pointer"
+              className="text-xs font-semibold text-primary hover:underline self-start mt-4 cursor-pointer"
             >
               Download all invoices
             </button>
@@ -160,19 +160,19 @@ export const SettingsView: React.FC = () => {
 
       {/* 3. Privacy & Security Section */}
       <section className="space-y-4" id="section-privacy">
-        <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <Shield className="w-5 h-5 text-indigo-600" />
+        <div className="flex items-center space-x-2 text-xl font-semibold text-foreground">
+          <Shield className="w-5 h-5 text-primary" />
           <h3>Privacy & Security</h3>
         </div>
 
-        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl divide-y divide-[var(--border-color)] shadow-xs">
+        <div className="bg-surface border border-border rounded-2xl divide-y divide-border shadow-xs">
           {/* Data Export */}
           <div className="p-6 flex items-center justify-between gap-4">
             <div>
-              <h4 className="font-semibold text-[var(--text-primary)] text-base">
+              <h4 className="font-semibold text-foreground text-base">
                 Data Export
               </h4>
-              <p className="text-sm text-[var(--text-secondary)] mt-0.5">
+              <p className="text-sm text-secondary mt-0.5">
                 Download a copy of your personal focus data and history.
               </p>
             </div>
@@ -181,20 +181,20 @@ export const SettingsView: React.FC = () => {
               <button
                 id="btn-export-data-trigger"
                 onClick={() => setDownloadDropdown(!downloadDropdown)}
-                className="p-2.5 rounded-xl border border-[var(--border-color)] hover:bg-[var(--bg-card-subtle)] text-[var(--text-primary)] transition-colors cursor-pointer"
+                className="p-2.5 rounded-xl border border-border hover:bg-surface-subtle text-foreground transition-colors cursor-pointer"
                 title="Export Focus Data"
               >
                 <Download className="w-5 h-5" />
               </button>
 
               {downloadDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl shadow-lg p-2 z-20 space-y-1">
+                <div className="absolute right-0 mt-2 w-48 bg-surface border border-border rounded-xl shadow-lg p-2 z-20 space-y-1">
                   <button
                     onClick={() => {
                       exportDataJSON();
                       setDownloadDropdown(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs font-medium text-[var(--text-primary)] hover:bg-[var(--bg-card-subtle)] rounded-lg"
+                    className="w-full text-left px-3 py-2 text-xs font-medium text-foreground hover:bg-surface-subtle rounded-lg"
                   >
                     Export as JSON (.json)
                   </button>
@@ -203,7 +203,7 @@ export const SettingsView: React.FC = () => {
                       exportDataCSV();
                       setDownloadDropdown(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs font-medium text-[var(--text-primary)] hover:bg-[var(--bg-card-subtle)] rounded-lg"
+                    className="w-full text-left px-3 py-2 text-xs font-medium text-foreground hover:bg-surface-subtle rounded-lg"
                   >
                     Export Sessions (.csv)
                   </button>
@@ -215,10 +215,10 @@ export const SettingsView: React.FC = () => {
           {/* Account Deletion */}
           <div className="p-6 flex items-center justify-between gap-4">
             <div>
-              <h4 className="font-semibold text-rose-600 text-base">
+              <h4 className="font-semibold text-error text-base">
                 Account Deletion
               </h4>
-              <p className="text-sm text-[var(--text-secondary)] mt-0.5">
+              <p className="text-sm text-secondary mt-0.5">
                 Permanently remove all your account information and focus history.
               </p>
             </div>
@@ -226,7 +226,7 @@ export const SettingsView: React.FC = () => {
             <button
               id="btn-delete-account-trigger"
               onClick={() => setDeleteModalOpen(true)}
-              className="p-2.5 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer"
+              className="p-2.5 rounded-xl border border-error/30 hover:bg-error-soft text-error transition-colors cursor-pointer"
               title="Delete Account"
             >
               <Trash2 className="w-5 h-5" />
@@ -240,13 +240,13 @@ export const SettingsView: React.FC = () => {
         <button
           id="btn-sign-out-all-sessions"
           onClick={() => setSignOutModalOpen(true)}
-          className="flex items-center space-x-3 px-8 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--bg-card-subtle)] text-[var(--text-primary)] text-sm font-semibold transition-all shadow-xs cursor-pointer"
+          className="flex items-center space-x-3 px-8 py-3 rounded-xl border border-border bg-surface hover:bg-surface-subtle text-foreground text-sm font-semibold transition-all shadow-xs cursor-pointer"
         >
-          <LogOut className="w-4 h-4 text-[var(--text-muted)]" />
+          <LogOut className="w-4 h-4 text-muted" />
           <span>Sign out of all sessions</span>
         </button>
 
-        <div className="text-center text-xs text-[var(--text-muted)] space-y-1">
+        <div className="text-center text-xs text-muted space-y-1">
           <p>© 2026 Zaf Focus. All rights reserved.</p>
           <div className="space-x-3">
             <a href="#privacy" onClick={(e) => e.preventDefault()} className="hover:underline">

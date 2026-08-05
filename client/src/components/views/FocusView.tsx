@@ -76,24 +76,24 @@ export const FocusView: React.FC = () => {
   return (
     <div
       className={`max-w-4xl mx-auto space-y-8 pb-16 animate-fadeIn transition-all ${
-        isFullscreen ? 'fixed inset-0 z-50 bg-[var(--bg-page)] p-8 max-w-none overflow-y-auto' : ''
+        isFullscreen ? 'fixed inset-0 z-50 bg-background p-8 max-w-none overflow-y-auto' : ''
       }`}
       id="focus-view"
     >
       {/* Top Controls Bar */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Focus Engine
           </h2>
-          <p className="text-[var(--text-secondary)] mt-1 text-sm">
+          <p className="text-secondary mt-1 text-sm">
             Immerse yourself in distraction-free deep work.
           </p>
         </div>
 
         <button
           onClick={() => setIsFullscreen(!isFullscreen)}
-          className="p-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--bg-card-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+          className="p-2.5 rounded-xl border border-border bg-surface hover:bg-surface-subtle text-muted hover:text-foreground transition-colors cursor-pointer"
           title={isFullscreen ? 'Exit Fullscreen' : 'Enter Distraction-Free Fullscreen'}
         >
           <Maximize2 className="w-5 h-5" />
@@ -102,7 +102,7 @@ export const FocusView: React.FC = () => {
 
       {/* Mode Selector Tabs */}
       <div className="flex justify-center">
-        <div className="bg-[var(--bg-card-subtle)] p-1.5 rounded-2xl border border-[var(--border-color)] inline-flex space-x-1">
+        <div className="bg-surface-subtle p-1.5 rounded-2xl border border-border inline-flex space-x-1">
           {[
             { id: 'pomodoro', label: `Pomodoro (${settings.pomodoroDuration}m)` },
             { id: 'shortBreak', label: `Short Break (${settings.shortBreakDuration}m)` },
@@ -114,8 +114,8 @@ export const FocusView: React.FC = () => {
               onClick={() => setTimerMode(mode.id as any)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 timerMode === mode.id
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-secondary hover:text-foreground'
               }`}
             >
               {mode.label}
@@ -125,22 +125,22 @@ export const FocusView: React.FC = () => {
       </div>
 
       {/* Main Circular Timer Display */}
-      <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-3xl p-8 shadow-sm flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="bg-surface border border-border rounded-3xl p-8 shadow-sm flex flex-col items-center justify-center relative overflow-hidden">
         {/* Task Title Edit Input */}
         <div className="w-full max-w-md text-center mb-6">
           <input
             type="text"
             value={activeTaskTitle}
             onChange={(e) => setActiveTaskTitle(e.target.value)}
-            className="text-center font-bold text-xl text-[var(--text-primary)] bg-transparent border-b border-transparent hover:border-[var(--border-color)] focus:border-indigo-500 focus:outline-none w-full py-1"
+            className="text-center font-bold text-xl text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none w-full py-1"
             placeholder="Focus Session Objective..."
           />
           <div className="mt-2 flex items-center justify-center space-x-2">
-            <span className="text-xs text-[var(--text-muted)]">Category:</span>
+            <span className="text-xs text-muted">Category:</span>
             <select
               value={activeCategory}
               onChange={(e) => setActiveCategory(e.target.value)}
-              className="text-xs font-semibold text-indigo-600 bg-transparent focus:outline-none cursor-pointer"
+              className="text-xs font-semibold text-primary-strong bg-transparent focus:outline-none cursor-pointer"
             >
               <option value="Coding">Coding</option>
               <option value="Design">Design</option>
@@ -165,7 +165,7 @@ export const FocusView: React.FC = () => {
             />
             {/* Animated Active Stroke */}
             <circle
-              stroke="#4648d4"
+              stroke="var(--primary)"
               fill="transparent"
               strokeWidth={stroke}
               strokeDasharray={circumference + ' ' + circumference}
@@ -179,10 +179,10 @@ export const FocusView: React.FC = () => {
 
           {/* Center Digital Clock */}
           <div className="absolute flex flex-col items-center justify-center">
-            <span className="text-5xl md:text-6xl font-mono font-extrabold tracking-tight text-[var(--text-primary)]">
+            <span className="text-5xl md:text-6xl font-mono font-extrabold tracking-tight text-foreground">
               {minutesDisplay}:{secondsDisplay}
             </span>
-            <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mt-2">
+            <span className="text-xs font-semibold text-muted uppercase tracking-wider mt-2">
               {isRunning ? 'Flow State Active' : 'Paused'}
             </span>
           </div>
@@ -192,7 +192,7 @@ export const FocusView: React.FC = () => {
         <div className="flex items-center space-x-4 mt-8">
           <button
             onClick={resetTimer}
-            className="p-4 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card-subtle)] hover:bg-[var(--border-color)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer"
+            className="p-4 rounded-2xl border border-border bg-surface-subtle hover:bg-border text-muted hover:text-foreground transition-all cursor-pointer"
             title="Reset Timer"
           >
             <RotateCcw className="w-5 h-5" />
@@ -201,7 +201,7 @@ export const FocusView: React.FC = () => {
           <button
             id="btn-main-timer-toggle"
             onClick={isRunning ? pauseTimer : startTimer}
-            className="flex items-center space-x-3 px-8 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base shadow-md hover:shadow-lg transition-all cursor-pointer"
+            className="flex items-center space-x-3 px-8 py-4 rounded-2xl bg-primary hover:bg-primary-hover text-white font-bold text-base shadow-md hover:shadow-lg transition-all cursor-pointer"
           >
             {isRunning ? (
               <>
@@ -218,7 +218,7 @@ export const FocusView: React.FC = () => {
 
           <button
             onClick={skipTimer}
-            className="p-4 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card-subtle)] hover:bg-[var(--border-color)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer"
+            className="p-4 rounded-2xl border border-border bg-surface-subtle hover:bg-border text-muted hover:text-foreground transition-all cursor-pointer"
             title="Skip Session"
           >
             <SkipForward className="w-5 h-5" />
@@ -227,26 +227,26 @@ export const FocusView: React.FC = () => {
       </div>
 
       {/* Web Audio Sound Synthesizer Panel */}
-      <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
+      <div className="bg-surface border border-border rounded-2xl p-6 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <Volume2 className="w-5 h-5 text-indigo-600" />
-            <h3 className="font-semibold text-base text-[var(--text-primary)]">
+            <Volume2 className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-base text-foreground">
               Ambient White Noise Generator
             </h3>
           </div>
 
           <div className="flex items-center space-x-3">
-            <span className="text-xs text-[var(--text-muted)] font-medium">Volume</span>
+            <span className="text-xs text-muted font-medium">Volume</span>
             <input
               type="range"
               min="0"
               max="100"
               value={settings.soundVolume}
               onChange={handleVolumeChange}
-              className="w-28 accent-indigo-600 cursor-pointer"
+              className="w-28 accent-primary cursor-pointer"
             />
-            <span className="text-xs font-bold text-[var(--text-primary)] w-8">
+            <span className="text-xs font-bold text-foreground w-8">
               {settings.soundVolume}%
             </span>
           </div>
@@ -261,8 +261,8 @@ export const FocusView: React.FC = () => {
                 onClick={() => setAmbientPreset(btn.id as any)}
                 className={`flex items-center justify-center space-x-2 p-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
-                    : 'border-[var(--border-color)] bg-[var(--bg-card-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    ? 'border-primary bg-primary-soft text-primary-strong'
+                    : 'border-border bg-surface-subtle text-secondary hover:text-foreground'
                 }`}
               >
                 {btn.icon}

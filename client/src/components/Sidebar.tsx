@@ -44,13 +44,13 @@ export const Sidebar: React.FC = () => {
       <div>
         {/* Brand Header */}
         <div className="mb-8 px-2">
-          <div className="flex items-center space-x-2 text-indigo-600">
-            <Sparkles className="w-6 h-6 fill-indigo-600/20" />
-            <span className="font-bold text-xl tracking-tight text-[var(--text-primary)]">
+          <div className="flex items-center space-x-2 text-primary">
+            <Sparkles className="w-6 h-6 fill-primary/20" />
+            <span className="font-bold text-xl tracking-tight text-foreground">
               Zaf Focus
             </span>
           </div>
-          <p className="text-xs text-[var(--text-muted)] mt-1 font-medium tracking-wide">
+          <p className="text-xs text-muted mt-1 font-medium tracking-wide">
             Deep Work Engine
           </p>
         </div>
@@ -66,11 +66,11 @@ export const Sidebar: React.FC = () => {
                 onClick={() => handleNavClick(item.id)}
                 className={`w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-150 ${
                   isActive
-                    ? 'bg-[#d0e1fb] text-[#1b1b23] shadow-sm font-semibold'
-                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)]'
+                    ? 'bg-surface-active text-foreground shadow-sm font-semibold'
+                    : 'text-secondary hover:bg-surface-subtle hover:text-foreground'
                 }`}
               >
-                <span className={isActive ? 'text-indigo-700' : 'text-[var(--text-muted)]'}>
+                <span className={isActive ? 'text-primary-strong' : 'text-muted'}>
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
@@ -81,16 +81,16 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Bottom Actions */}
-      <div className="pt-6 border-t border-[var(--border-color)] space-y-1.5">
+      <div className="pt-6 border-t border-border space-y-1.5">
         <button
           id="btn-support"
           onClick={() => {
             setSupportModalOpen(true);
             setMobileOpen(false);
           }}
-          className="w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)] transition-colors"
+          className="w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-medium text-secondary hover:bg-surface-subtle hover:text-foreground transition-colors"
         >
-          <HelpCircle className="w-5 h-5 text-[var(--text-muted)]" />
+          <HelpCircle className="w-5 h-5 text-muted" />
           <span>Support</span>
         </button>
 
@@ -100,9 +100,9 @@ export const Sidebar: React.FC = () => {
             setSignOutModalOpen(true);
             setMobileOpen(false);
           }}
-          className="w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)] transition-colors"
+          className="w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl text-sm font-medium text-secondary hover:bg-surface-subtle hover:text-foreground transition-colors"
         >
-          <LogOut className="w-5 h-5 text-[var(--text-muted)]" />
+          <LogOut className="w-5 h-5 text-muted" />
           <span>Logout</span>
         </button>
       </div>
@@ -114,21 +114,21 @@ export const Sidebar: React.FC = () => {
       {/* Desktop Permanent Sidebar */}
       <aside
         id="desktop-sidebar"
-        className="hidden md:block w-64 bg-[var(--bg-sidebar)] border-r border-[var(--border-color)] h-screen sticky top-0 shrink-0"
+        className="hidden md:block w-64 bg-surface border-r border-border h-screen sticky top-0 shrink-0"
       >
         {SidebarContent}
       </aside>
 
       {/* Mobile Header Bar & Drawer Toggle */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[var(--bg-sidebar)] border-b border-[var(--border-color)] sticky top-0 z-40">
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-surface border-b border-border sticky top-0 z-40">
         <div className="flex items-center space-x-2">
-          <Sparkles className="w-5 h-5 text-indigo-600" />
-          <span className="font-bold text-lg text-[var(--text-primary)]">Zaf Focus</span>
+          <Sparkles className="w-5 h-5 text-primary" />
+          <span className="font-bold text-lg text-foreground">Zaf Focus</span>
         </div>
         <button
           id="mobile-menu-toggle"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)]"
+          className="p-2 rounded-lg text-secondary hover:bg-surface-subtle"
           aria-label="Toggle Navigation Menu"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -139,10 +139,10 @@ export const Sidebar: React.FC = () => {
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-50 flex">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            className="fixed inset-0 bg-overlay/50 backdrop-blur-xs"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="relative w-72 bg-[var(--bg-sidebar)] h-full shadow-2xl z-10 flex flex-col">
+          <div className="relative w-72 bg-surface h-full shadow-2xl z-10 flex flex-col">
             {SidebarContent}
           </div>
         </div>

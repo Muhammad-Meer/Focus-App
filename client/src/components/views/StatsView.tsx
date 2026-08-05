@@ -55,19 +55,19 @@ export const StatsView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-(--text-primary)">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Focus Analytics & Stats
           </h2>
-          <p className="text-[var(--text-secondary)] mt-1 text-sm">
+          <p className="text-secondary mt-1 text-sm">
             Detailed performance breakdown, focus volume, and session history logs.
           </p>
         </div>
 
         <button
           onClick={exportDataCSV}
-          className="flex items-center space-x-2 border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--bg-card-subtle)] text-[var(--text-primary)] text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+          className="flex items-center space-x-2 border border-border bg-surface hover:bg-surface-subtle text-foreground text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
         >
-          <Download className="w-4 h-4 text-[var(--text-muted)]" />
+          <Download className="w-4 h-4 text-muted" />
           <span>Export CSV</span>
         </button>
       </div>
@@ -75,17 +75,17 @@ export const StatsView: React.FC = () => {
       {/* Analytics Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Weekly Focus Hours Bar Graph */}
-        <div className="lg:col-span-2 bg-[var(--bg-card)] border border-[var(--border-color)] p-6 rounded-2xl shadow-xs space-y-6">
+        <div className="lg:col-span-2 bg-surface border border-border p-6 rounded-2xl shadow-xs space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-base text-[var(--text-primary)]">
+              <h3 className="font-semibold text-base text-foreground">
                 Weekly Focus Volume
               </h3>
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">
+              <p className="text-xs text-muted mt-0.5">
                 Total hours logged per day this week
               </p>
             </div>
-            <span className="text-xs font-bold    px-3 py-1 rounded-lg">
+            <span className="text-xs font-bold px-3 py-1 rounded-lg">
               {weeklyTotal} Hours Total
             </span>
           </div>   
@@ -93,7 +93,7 @@ export const StatsView: React.FC = () => {
           {/* Bar Chart Canvas Simulation */}
           <div className="h-48 flex items-end justify-between gap-3 pt-6 px-2">
             {!hasRealData ? (
-              <div className="w-full h-full flex items-center justify-center text-xs text-[var(--text-muted)]">
+              <div className="w-full h-full flex items-center justify-center text-xs text-muted">
                 No focus data yet this week. Complete a session to start tracking.
               </div>
             ) : (
@@ -102,16 +102,16 @@ export const StatsView: React.FC = () => {
                 const heightPct = (val / maxWeeklyHour) * 100;
                 return (
                   <div key={day} className="flex-1 flex flex-col items-center gap-2 group">
-                    <span className="text-[10px] font-bold text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] font-bold text-muted opacity-0 group-hover:opacity-100 transition-opacity">
                       {val}h
                     </span>
-                    <div className="w-full bg-[var(--bg-card-subtle)] h-36 rounded-xl flex items-end overflow-hidden p-1">
+                    <div className="w-full bg-surface-subtle h-36 rounded-xl flex items-end overflow-hidden p-1">
                       <div
-                        className="w-full bg-gradient-to-t from-indigo-600 to-indigo-500 rounded-lg transition-all duration-500 group-hover:from-indigo-500 group-hover:to-indigo-400"
+                        className="w-full bg-primary rounded-lg transition-all duration-500 group-hover:bg-primary-hover"
                         style={{ height: `${heightPct}%` }}
                       />
                     </div>
-                    <span className="text-xs font-semibold text-[var(--text-secondary)]">
+                    <span className="text-xs font-semibold text-secondary">
                       {day}
                     </span>
                   </div>
@@ -122,17 +122,17 @@ export const StatsView: React.FC = () => {
         </div>
 
         {/* Category Breakdown Donut / Progress */}
-        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] p-6 rounded-2xl shadow-xs space-y-5">
+        <div className="bg-surface border border-border p-6 rounded-2xl shadow-xs space-y-5">
           <div className="flex items-center space-x-2">
-            <PieChartIcon className="w-5 h-5 text-green-700" />
-            <h3 className="font-semibold text-base text-[var(--text-primary)]">
+            <PieChartIcon className="w-5 h-5 text-success" />
+            <h3 className="font-semibold text-base text-foreground">
               Focus Distribution
             </h3>
           </div>
 
           <div className="space-y-4">
             {Object.keys(categoryTotals).length === 0 ? (
-              <p className="py-6 text-center text-xs text-[var(--text-muted)]">
+              <p className="py-6 text-center text-xs text-muted">
                 No focus data yet.
               </p>
             ) : (
@@ -141,14 +141,14 @@ export const StatsView: React.FC = () => {
                 return (
                   <div key={cat} className="space-y-1.5">
                     <div className="flex justify-between text-xs font-medium">
-                      <span className="text-[var(--text-primary)]">{cat}</span>
-                      <span className="text-[var(--text-muted)]">
+                      <span className="text-foreground">{cat}</span>
+                      <span className="text-muted">
                         {mins} mins ({pct}%)
                       </span>
                     </div>
-                    <div className="w-full bg-[var(--bg-card-subtle)] h-2 rounded-full overflow-hidden">
+                    <div className="w-full bg-surface-subtle h-2 rounded-full overflow-hidden">
                       <div
-                        className="bg-indigo-600 h-full rounded-full"
+                        className="bg-primary h-full rounded-full"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -161,27 +161,27 @@ export const StatsView: React.FC = () => {
       </div>
 
       {/* Filterable Session Logs Table */}
-      <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
+      <div className="bg-surface border border-border rounded-2xl p-6 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h3 className="font-semibold text-lg text-[var(--text-primary)]">Session Logs</h3>
+          <h3 className="font-semibold text-lg text-foreground">Session Logs</h3>
 
           {/* Search & Category Filter */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="relative">
-              <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search sessions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 pr-4 py-2 bg-[var(--bg-card-subtle)] border border-[var(--border-color)] rounded-xl text-xs font-medium text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 w-44"
+                className="pl-9 pr-4 py-2 bg-surface-subtle border border-border rounded-xl text-xs font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary w-44"
               />
             </div>
 
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="bg-[var(--bg-card-subtle)]bg-[var(--bg-card-subtle)]bg-[var(--bg-card-subtle)] border  text-xs font-medium  rounded-xl px-3 py-2 focus:outline-none cursor-pointer"
+              className="bg-surface-subtle border border-border text-xs font-medium text-foreground rounded-xl px-3 py-2 focus:outline-none cursor-pointer"
             >
               <option value="All">All Categories</option>
               <option value="Coding">Coding</option>
@@ -197,7 +197,7 @@ export const StatsView: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-[var(--border-color)] text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+              <tr className="border-b border-border text-muted font-semibold uppercase tracking-wider">
                 <th className="py-3 px-4">Session Title</th>
                 <th className="py-3 px-4">Category</th>
                 <th className="py-3 px-4">Duration</th>
@@ -205,31 +205,31 @@ export const StatsView: React.FC = () => {
                 <th className="py-3 px-4">Completed Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--border-color)]">
+            <tbody className="divide-y divide-border">
               {filteredSessions.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-[var(--text-muted)]">
+                  <td colSpan={5} className="py-8 text-center text-muted">
                     No focus sessions found matching criteria.
                   </td>
                 </tr>
               ) : (
                 filteredSessions.map((s) => (
-                  <tr key={s.id} className="hover:bg-[var(--bg-card-subtle)] transition-colors">
-                    <td className="py-3.5 px-4 font-semibold text-[var(--text-primary)]">
+                  <tr key={s.id} className="hover:bg-surface-subtle transition-colors">
+                    <td className="py-3.5 px-4 font-semibold text-foreground">
                       {s.title}
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="px-2.5 py-1 rounded-md     font-semibold text-[11px]">
+                      <span className="px-2.5 py-1 rounded-md font-semibold text-[11px]">
                         {s.category}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-bold text-[var(--text-primary)]">
+                    <td className="py-3.5 px-4 font-bold text-foreground">
                       {s.durationMinutes} mins
                     </td>
-                    <td className="py-3.5 px-4 capitalize text-[var(--text-secondary)]">
+                    <td className="py-3.5 px-4 capitalize text-secondary">
                       {s.mode}
                     </td>
-                    <td className="py-3.5 px-4 text-[var(--text-muted)]">
+                    <td className="py-3.5 px-4 text-muted">
                       {new Date(s.completedAt).toLocaleString([], {
                         month: 'short',
                         day: 'numeric',
