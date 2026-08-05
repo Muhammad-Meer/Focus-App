@@ -38,7 +38,7 @@ export const GoalsView: React.FC = () => {
 
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center space-x-2  hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+          className="flex items-center space-x-2  hover:bg-indigo-700 bg-indigo-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Goal</span>
@@ -111,7 +111,7 @@ export const GoalsView: React.FC = () => {
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-700 text-white shadow-xs"
+              className="px-5 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-700 bg-indigo-600 text-white shadow-xs"
             >
               Save Goal
             </button>
