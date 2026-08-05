@@ -140,7 +140,7 @@ export const FocusView: React.FC = () => {
             <select
               value={activeCategory}
               onChange={(e) => setActiveCategory(e.target.value)}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-transparent focus:outline-none cursor-pointer"
+              className="text-xs font-semibold text-indigo-600 bg-transparent focus:outline-none cursor-pointer"
             >
               <option value="Coding">Coding</option>
               <option value="Design">Design</option>
@@ -230,7 +230,7 @@ export const FocusView: React.FC = () => {
       <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <Volume2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <Volume2 className="w-5 h-5 text-indigo-600" />
             <h3 className="font-semibold text-base text-[var(--text-primary)]">
               Ambient White Noise Generator
             </h3>
@@ -261,7 +261,7 @@ export const FocusView: React.FC = () => {
                 onClick={() => setAmbientPreset(btn.id as any)}
                 className={`flex items-center justify-center space-x-2 p-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
+                    ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
                     : 'border-[var(--border-color)] bg-[var(--bg-card-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >

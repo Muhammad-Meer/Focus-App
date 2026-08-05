@@ -32,22 +32,6 @@
     --shadow-soft: 0 4px 20px -2px rgba(70, 72, 212, 0.05);
   }
 
-  .dark {
-    --bg-page: #0f0f15;
-    --bg-sidebar: #161622;
-    --bg-card: #1c1c28;
-    --bg-card-subtle: #242436;
-    --bg-accent-active: #2b334d;
-    --text-primary: #f2effb;
-    --text-secondary: #b5b2c7;
-    --text-muted: #7b7891;
-    --border-color: #2e2d40;
-    --primary: #6063ee;
-    --primary-hover: #7578ff;
-    --primary-light: #26254a;
-    --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-  }
-
   body {
     background-color: var(--bg-page);
     color: var(--text-primary);

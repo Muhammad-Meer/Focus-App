@@ -17,7 +17,7 @@ export const AccountDeleteModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-      <div className="bg-[var(--bg-card)] border border-rose-200 dark:border-rose-900/60 rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-6">
+      <div className="bg-[var(--bg-card)] border border-rose-200 rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-6">
         <button
           onClick={() => setDeleteModalOpen(false)}
           className="absolute top-5 right-5 p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-full hover:bg-[var(--bg-card-subtle)]"
@@ -25,12 +25,12 @@ export const AccountDeleteModal: React.FC = () => {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center space-x-3 text-rose-600 dark:text-rose-400">
-          <div className="p-3 bg-rose-50 dark:bg-rose-950/60 rounded-2xl">
+        <div className="flex items-center space-x-3 text-rose-600">
+          <div className="p-3 bg-rose-50 rounded-2xl">
             <AlertOctagon className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-rose-600 dark:text-rose-400">Delete Account & Data?</h3>
+            <h3 className="text-xl font-bold text-rose-600">Delete Account & Data?</h3>
             <p className="text-xs text-[var(--text-muted)] mt-0.5">This action cannot be undone.</p>
           </div>
         </div>
@@ -65,7 +65,7 @@ export const AccountDeleteModal: React.FC = () => {
             className={`px-5 py-2.5 rounded-xl text-xs font-semibold shadow-xs cursor-pointer ${
               confirmInput.trim().toUpperCase() === 'DELETE'
                 ? 'bg-rose-600 hover:bg-rose-700 text-white'
-                : 'bg-rose-300 dark:bg-rose-950 text-rose-100 cursor-not-allowed'
+                : 'bg-rose-300 text-rose-100 cursor-not-allowed'
             }`}
           >
             Permanently Delete

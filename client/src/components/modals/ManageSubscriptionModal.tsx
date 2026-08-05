@@ -18,7 +18,7 @@ export const ManageSubscriptionModal: React.FC = () => {
         </button>
 
         <div>
-          <span className="text-[10px] font-bold tracking-wider uppercase bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-md">
+          <span className="text-[10px] font-bold tracking-wider uppercase bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-md">
             SUBSCRIPTION MANAGEMENT
           </span>
           <h3 className="text-2xl font-bold text-[var(--text-primary)] mt-2">Free Tier</h3>
@@ -44,13 +44,13 @@ export const ManageSubscriptionModal: React.FC = () => {
 
         <div className="flex items-center justify-between p-4 border border-[var(--border-color)] rounded-2xl text-xs">
           <div className="flex items-center space-x-3">
-            <CreditCard className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <CreditCard className="w-5 h-5 text-indigo-600" />
             <div>
               <p className="font-semibold text-[var(--text-primary)]">No payment method on file</p>
               <p className="text-[var(--text-muted)]">Add a payment method to enable billing.</p>
             </div>
           </div>
-          <button className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+          <button className="text-xs font-semibold text-indigo-600 hover:underline">
             Edit
           </button>
         </div>

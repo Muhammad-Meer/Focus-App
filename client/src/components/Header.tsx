@@ -63,7 +63,7 @@ export const Header: React.FC = () => {
           onClick={() => setActiveRoute('settings')}
           className={`p-2 rounded-xl transition-colors ${
             activeRoute === 'settings'
-              ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50'
+              ? 'text-indigo-600 bg-indigo-50'
               : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)]'
           }`}
           title="Settings"
@@ -75,7 +75,7 @@ export const Header: React.FC = () => {
         <button
           id="btn-user-profile"
           onClick={() => setProfileModalOpen(true)}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:ring-2 hover:ring-indigo-500 transition-all ml-1"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200 text-slate-700 text-xs font-semibold hover:ring-2 hover:ring-indigo-500 transition-all ml-1"
           title="User Profile"
         >
           {initials || ''}

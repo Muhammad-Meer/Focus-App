@@ -119,7 +119,7 @@ export const AchievementsView: React.FC = () => {
               key={ach.id}
               className={`bg-[var(--bg-card)] border rounded-2xl p-6 shadow-xs flex flex-col justify-between transition-all ${
                 ach.unlocked
-                  ? 'border-indigo-200 dark:border-indigo-900/60 ring-1 ring-indigo-500/20'
+                  ? 'border-indigo-200 ring-1 ring-indigo-500/20'
                   : 'border-[var(--border-color)] opacity-75'
               }`}
             >
@@ -136,7 +136,7 @@ export const AchievementsView: React.FC = () => {
                   </div>
 
                   {ach.unlocked ? (
-                    <span className="flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-md">
+                    <span className="flex items-center space-x-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Unlocked</span>
                     </span>

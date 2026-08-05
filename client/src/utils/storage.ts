@@ -7,7 +7,6 @@ const ACHIEVEMENTS_KEY = 'zenith_achievements_v1';
 const NOTIFICATIONS_KEY = 'zenith_notifications_v1';
 
 export const DEFAULT_SETTINGS: UserSettings = {
-  theme: 'light',
   language: 'English (US)',
   autoStartOnBoot: true,
   soundEnabled: true,

@@ -17,8 +17,8 @@ export const SignOutModal: React.FC = () => {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center space-x-3 text-amber-600 dark:text-amber-400">
-          <div className="p-3 bg-amber-50 dark:bg-amber-950/50 rounded-2xl">
+        <div className="flex items-center space-x-3 text-amber-600">
+          <div className="p-3 bg-amber-50 rounded-2xl">
             <LogOut className="w-6 h-6" />
           </div>
           <h3 className="text-xl font-bold text-[var(--text-primary)]">Sign out of all sessions?</h3>

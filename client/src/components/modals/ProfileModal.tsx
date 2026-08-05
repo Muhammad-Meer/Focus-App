@@ -35,7 +35,7 @@ export const ProfileModal: React.FC = () => {
             <h3 className="text-xl font-bold text-[var(--text-primary)]">{displayName}</h3>
             <p className="text-xs text-[var(--text-muted)] font-medium">{displayEmail}</p>
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full">
+          <span className="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full">
             {serverStats?.level ? `Level ${serverStats.level}` : 'Member'}
           </span>
         </div>

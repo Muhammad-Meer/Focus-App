@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import {
   RouteType,
-  ThemeMode,
   FocusMode,
   FocusSession,
   Goal,
@@ -63,11 +62,6 @@ interface AppContextType {
   // Navigation
   activeRoute: RouteType;
   setActiveRoute: (route: RouteType) => void;
-
-  // Theme
-  theme: ThemeMode;
-  toggleTheme: () => void;
-  setThemeMode: (mode: ThemeMode) => void;
 
   // User Settings
   settings: UserSettings;
@@ -172,7 +166,6 @@ export const AppProvider: React.FC<{
 }> = ({ children, user, onLogout }) => {
   const [activeRoute, setActiveRoute] = useState<RouteType>('dashboard');
   const [settings, setSettings] = useState<UserSettings>(getStoredSettings);
-  const [theme, setTheme] = useState<ThemeMode>(settings.theme);
 
   const [sessions, setSessions] = useState<FocusSession[]>(getStoredSessions);
   const [goals, setGoals] = useState<Goal[]>(getStoredGoals);
@@ -203,16 +196,6 @@ export const AppProvider: React.FC<{
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-
-  // Apply Theme class to document root element
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [theme]);
 
   // Sync achievements unlocked state with backend badges
   const syncAchievements = useCallback((badges: { id: string }[]) => {
@@ -290,22 +273,9 @@ export const AppProvider: React.FC<{
     setSettings((prev) => {
       const updated = { ...prev, ...newSettings };
       saveStoredSettings(updated);
-      if (newSettings.theme && newSettings.theme !== theme) {
-        setTheme(newSettings.theme);
-      }
       return updated;
     });
-  }, [theme]);
-
-  const setThemeMode = (mode: ThemeMode) => {
-    setTheme(mode);
-    updateSettings({ theme: mode });
-  };
-
-  const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
-    setThemeMode(nextTheme);
-  };
+  }, []);
 
   // Timer duration setup on mode change
   const setTimerMode = (mode: FocusMode) => {
@@ -645,7 +615,6 @@ export const AppProvider: React.FC<{
     setGoals([]);
     setNotifications([]);
     setSettings(getStoredSettings());
-    setTheme('light');
     soundSynth.stop();
     onLogout();
   };
@@ -667,9 +636,6 @@ export const AppProvider: React.FC<{
         serverStats,
         activeRoute,
         setActiveRoute,
-        theme,
-        toggleTheme,
-        setThemeMode,
         settings,
         updateSettings,
         timerMode,

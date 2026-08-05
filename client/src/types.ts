@@ -1,7 +1,5 @@
 export type RouteType = 'dashboard' | 'focus' | 'stats' | 'achievements' | 'goals' | 'settings';
 
-export type ThemeMode = 'light' | 'dark';
-
 export type FocusMode = 'pomodoro' | 'shortBreak' | 'longBreak' | 'custom';
 
 export interface FocusSession {
@@ -44,7 +42,6 @@ export interface Invoice {
 }
 
 export interface UserSettings {
-  theme: ThemeMode;
   language: string;
   autoStartOnBoot: boolean;
   soundEnabled: boolean;

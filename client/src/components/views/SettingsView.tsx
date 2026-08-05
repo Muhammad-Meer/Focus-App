@@ -1,11 +1,8 @@
 import React from 'react';
 import {
-  Globe,
   Sliders,
   CreditCard,
   Shield,
-  Sun,
-  Moon,
   ChevronDown,
   Download,
   Trash2,
@@ -15,8 +12,6 @@ import { useApp } from '../../context/AppContext';
 
 export const SettingsView: React.FC = () => {
   const {
-    theme,
-    setThemeMode,
     settings,
     updateSettings,
     setBillingModalOpen,
@@ -40,58 +35,10 @@ export const SettingsView: React.FC = () => {
         </p>
       </div>
 
-      {/* 1. Appearance Section */}
-      <section className="space-y-4" id="section-appearance">
-        <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <Globe className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-          <h3>Appearance</h3>
-        </div>
-
-        <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h4 className="font-semibold text-[var(--text-primary)] text-base">
-              Interface Theme
-            </h4>
-            <p className="text-sm text-[var(--text-secondary)] mt-0.5">
-              Switch between light and dark visual styles.
-            </p>
-          </div>
-
-          {/* Theme Pill Selector */}
-          <div className="bg-[var(--bg-card-subtle)] p-1 rounded-full flex items-center self-start sm:self-auto border border-[var(--border-color)]">
-            <button
-              id="theme-toggle-light"
-              onClick={() => setThemeMode('light')}
-              className={`flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                theme === 'light'
-                  ? 'bg-white text-indigo-900 shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              <Sun className="w-3.5 h-3.5 text-amber-500" />
-              <span>Light</span>
-            </button>
-
-            <button
-              id="theme-toggle-dark"
-              onClick={() => setThemeMode('dark')}
-              className={`flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                theme === 'dark'
-                  ? 'bg-slate-800 text-white shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              <Moon className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Dark</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. General Section */}
+      {/* 1. General Section */}
       <section className="space-y-4" id="section-general">
         <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <Sliders className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <Sliders className="w-5 h-5 text-indigo-600" />
           <h3>General</h3>
         </div>
 
@@ -141,7 +88,7 @@ export const SettingsView: React.FC = () => {
               id="toggle-startup-behavior"
               onClick={() => updateSettings({ autoStartOnBoot: !settings.autoStartOnBoot })}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-                settings.autoStartOnBoot ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-700'
+                settings.autoStartOnBoot ? 'bg-indigo-600' : 'bg-slate-300'
               }`}
               role="switch"
               aria-checked={settings.autoStartOnBoot}
@@ -156,10 +103,10 @@ export const SettingsView: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Subscription Section */}
+      {/* 2. Subscription Section */}
       <section className="space-y-4" id="section-subscription">
         <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <CreditCard className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <CreditCard className="w-5 h-5 text-indigo-600" />
           <h3>Subscription</h3>
         </div>
 
@@ -203,7 +150,7 @@ export const SettingsView: React.FC = () => {
             <button
               id="btn-download-invoices"
               onClick={exportDataCSV}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline self-start mt-4 cursor-pointer"
+              className="text-xs font-semibold text-indigo-600 hover:underline self-start mt-4 cursor-pointer"
             >
               Download all invoices
             </button>
@@ -211,10 +158,10 @@ export const SettingsView: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Privacy & Security Section */}
+      {/* 3. Privacy & Security Section */}
       <section className="space-y-4" id="section-privacy">
         <div className="flex items-center space-x-2 text-xl font-semibold text-[var(--text-primary)]">
-          <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <Shield className="w-5 h-5 text-indigo-600" />
           <h3>Privacy & Security</h3>
         </div>
 
@@ -268,7 +215,7 @@ export const SettingsView: React.FC = () => {
           {/* Account Deletion */}
           <div className="p-6 flex items-center justify-between gap-4">
             <div>
-              <h4 className="font-semibold text-rose-600 dark:text-rose-400 text-base">
+              <h4 className="font-semibold text-rose-600 text-base">
                 Account Deletion
               </h4>
               <p className="text-sm text-[var(--text-secondary)] mt-0.5">
@@ -279,7 +226,7 @@ export const SettingsView: React.FC = () => {
             <button
               id="btn-delete-account-trigger"
               onClick={() => setDeleteModalOpen(true)}
-              className="p-2.5 rounded-xl border border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer"
+              className="p-2.5 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer"
               title="Delete Account"
             >
               <Trash2 className="w-5 h-5" />

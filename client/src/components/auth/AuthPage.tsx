@@ -96,7 +96,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
           </p>
 
           {error && (
-            <div className="mb-4 px-4 py-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-xs font-medium text-rose-700 dark:text-rose-300">
+            <div className="mb-4 px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-medium text-rose-700">
               {error}
             </div>
           )}
@@ -159,7 +159,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onAuthed }) => {
             <button
               type="button"
               onClick={() => switchMode(mode === 'login' ? 'signup' : 'login')}
-              className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+              className="font-semibold text-indigo-600 hover:underline cursor-pointer"
             >
               {mode === 'login' ? 'Sign Up' : 'Sign In'}
             </button>

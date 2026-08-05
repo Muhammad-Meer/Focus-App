@@ -49,7 +49,7 @@ export const GoalsView: React.FC = () => {
       {showAddForm && (
         <form
           onSubmit={handleCreateGoal}
-          className="bg-[var(--bg-card)] border border-indigo-200 dark:border-indigo-900/60 p-6 rounded-2xl shadow-sm space-y-4 animate-fadeIn"
+          className="bg-[var(--bg-card)] border border-indigo-200 p-6 rounded-2xl shadow-sm space-y-4 animate-fadeIn"
         >
           <h3 className="font-bold text-base text-[var(--text-primary)]">Add New Focus Goal</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -138,13 +138,13 @@ export const GoalsView: React.FC = () => {
               key={goal.id}
               className={`bg-[var(--bg-card)] border rounded-2xl p-6 shadow-xs space-y-4 transition-all ${
                 goal.completed
-                  ? 'border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/20 dark:bg-emerald-950/10'
+                  ? 'border-emerald-200 bg-emerald-50/20'
                   : 'border-[var(--border-color)]'
               }`}
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-2.5 py-1 rounded-md">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
                     {goal.category}
                   </span>
                   <h3 className="font-bold text-lg text-[var(--text-primary)] mt-2">
@@ -171,7 +171,7 @@ export const GoalsView: React.FC = () => {
                   <span className="text-[var(--text-secondary)]">
                     {currentHrs} / {targetHrs} hours
                   </span>
-                  <span className="text-indigo-600 dark:text-indigo-400 font-bold">{pct}%</span>
+                  <span className="text-indigo-600 font-bold">{pct}%</span>
                 </div>
                 <div className="w-full bg-[var(--bg-card-subtle)] h-2.5 rounded-full overflow-hidden">
                   <div

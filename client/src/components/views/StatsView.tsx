@@ -124,7 +124,7 @@ export const StatsView: React.FC = () => {
         {/* Category Breakdown Donut / Progress */}
         <div className="bg-[var(--bg-card)] border border-[var(--border-color)] p-6 rounded-2xl shadow-xs space-y-5">
           <div className="flex items-center space-x-2">
-            <PieChartIcon className="w-5 h-5 text-green-700 dark:text-indigo-400" />
+            <PieChartIcon className="w-5 h-5 text-green-700" />
             <h3 className="font-semibold text-base text-[var(--text-primary)]">
               Focus Distribution
             </h3>

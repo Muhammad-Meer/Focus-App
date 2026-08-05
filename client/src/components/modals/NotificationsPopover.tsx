@@ -22,7 +22,7 @@ export const NotificationsPopover: React.FC = () => {
       <div className="relative w-full max-w-sm bg-[var(--bg-card)] border border-[var(--border-color)] rounded-3xl shadow-2xl p-5 z-10 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
           <div className="flex items-center space-x-2">
-            <Bell className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+            <Bell className="w-4 h-4 text-indigo-600" />
             <h3 className="font-bold text-sm text-[var(--text-primary)]">Notifications</h3>
           </div>
           <div className="flex items-center space-x-2">
@@ -57,7 +57,7 @@ export const NotificationsPopover: React.FC = () => {
                 className={`p-3 rounded-2xl border text-xs space-y-1 transition-all cursor-pointer ${
                   n.read
                     ? 'border-[var(--border-color)] bg-[var(--bg-card-subtle)] opacity-70'
-                    : 'border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/30'
+                    : 'border-indigo-200 bg-indigo-50/40'
                 }`}
               >
                 <div className="flex items-center justify-between font-bold text-[var(--text-primary)]">

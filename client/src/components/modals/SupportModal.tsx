@@ -32,7 +32,7 @@ export const SupportModal: React.FC = () => {
         </button>
 
         <div className="flex items-center space-x-3">
-          <div className="p-3 bg-indigo-50 dark:bg-indigo-950/60 rounded-2xl text-indigo-600 dark:text-indigo-400">
+          <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600">
             <HelpCircle className="w-6 h-6" />
           </div>
           <div>
@@ -44,7 +44,7 @@ export const SupportModal: React.FC = () => {
         </div>
 
         {sent ? (
-          <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 rounded-2xl text-center space-y-2">
+          <div className="p-6 bg-emerald-50 text-emerald-700 rounded-2xl text-center space-y-2">
             <p className="font-bold text-base">Message Sent Successfully! 🎉</p>
             <p className="text-xs">Our deep work support team will respond within 24 hours.</p>
           </div>

@@ -44,7 +44,7 @@ export const Sidebar: React.FC = () => {
       <div>
         {/* Brand Header */}
         <div className="mb-8 px-2">
-          <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400">
+          <div className="flex items-center space-x-2 text-indigo-600">
             <Sparkles className="w-6 h-6 fill-indigo-600/20" />
             <span className="font-bold text-xl tracking-tight text-[var(--text-primary)]">
               Zaf Focus
@@ -66,11 +66,11 @@ export const Sidebar: React.FC = () => {
                 onClick={() => handleNavClick(item.id)}
                 className={`w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-150 ${
                   isActive
-                    ? 'bg-[#d0e1fb] text-[#1b1b23] dark:bg-indigo-950/80 dark:text-indigo-200 shadow-sm font-semibold'
+                    ? 'bg-[#d0e1fb] text-[#1b1b23] shadow-sm font-semibold'
                     : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-subtle)] hover:text-[var(--text-primary)]'
                 }`}
               >
-                <span className={isActive ? 'text-indigo-700 dark:text-indigo-300' : 'text-[var(--text-muted)]'}>
+                <span className={isActive ? 'text-indigo-700' : 'text-[var(--text-muted)]'}>
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
@@ -122,7 +122,7 @@ export const Sidebar: React.FC = () => {
       {/* Mobile Header Bar & Drawer Toggle */}
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[var(--bg-sidebar)] border-b border-[var(--border-color)] sticky top-0 z-40">
         <div className="flex items-center space-x-2">
-          <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <Sparkles className="w-5 h-5 text-indigo-600" />
           <span className="font-bold text-lg text-[var(--text-primary)]">Zaf Focus</span>
         </div>
         <button
